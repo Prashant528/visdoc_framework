@@ -1,4 +1,4 @@
-const dummy_data = [
+const graph_sequences = [
     {
       "sequence": "Setting Up Environment for Development",
       "edges": [
@@ -45,4 +45,4 @@ const dummy_data = [
     }
   ]
 
-export default dummy_data
+export default graph_sequences
