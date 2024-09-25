@@ -1,7 +1,7 @@
 import {MarkerType} from '@xyflow/react';
 
-const x_offset = 300
-const y_offset = 300
+const x_offset = 500
+const y_offset = 200
 const edge_color = '#007FFF'
 
 export default function render_graph(repo_name, graph_sequences){

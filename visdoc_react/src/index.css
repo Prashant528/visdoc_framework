@@ -11,3 +11,54 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+/* The Modal (background) */
+.modal {
+  display: flex; /* Use flexbox to center the modal */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6); /* Black background with higher opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  position: relative; /* Relative to position the close button */
+  padding: 20px;
+  border-radius: 8px;
+  border: none; /* Removed the border for a cleaner look */
+  width: 80%; /* Cover most of the screen */
+  max-width: 800px; /* Prevent it from growing too wide on large screens */
+  max-height: 90vh; /* Limit the height to 90% of the viewport */
+  overflow-y: auto; /* Enable scrolling if content exceeds modal height */
+  z-index: 1001;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 10px; /* Position it at the top */
+  right: 20px; /* Position it to the right */
+  color: #aaaaaa;
+  font-size: 28px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
