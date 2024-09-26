@@ -56,7 +56,7 @@ const App = () => {
     [],
   );
 
-  const [modalContent, setModalContent] = useState('Modal content');
+  const [modalContent, setModalContent] = useState('Text Instructions go here.');
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => {setOpen(false);};
 	const handleOpenModal = () => {setModalContent(modalContent);setOpen(true);};
