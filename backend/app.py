@@ -25,18 +25,18 @@ def fetch_and_analyze():
 
     if not repo or not file_path:
         return jsonify({"error": "Missing required parameters"}), 400
-    
-    print(data)
-    print(Config.GITHUB_TOKEN)
-    print(Config.OPENAI_API_KEY)
 
-    # Download contributing.md and related files
-    documents = github_service.download_recursive(owner, repo, file_path)
+    # Download contributing.md and related files PTANDAN(remove the below comment)
+    # documents = github_service.download_recursive(owner, repo, file_path)
 
-    return f"<p>{data}</p>"
+    documents = ''
+    system_prompt = openai_service.fetch_system_prompt()
+    user_prompt = openai_service.fetch_user_prompt()
 
-    # # Send the documents to OpenAI for processing
-    # result = openai_service.process_documents(system_prompt, user_prompt, documents)
+    # Send the documents to OpenAI for processing
+    result = openai_service.process_documents(system_prompt, user_prompt, documents)
+    return f"<p>{data}</p><br/><p>{result}</p>"
+
     # return jsonify({"result": result})
 
 if __name__ == '__main__':
