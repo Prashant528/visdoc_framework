@@ -19,6 +19,7 @@ def print_hello():
 @app.route('/fetch_and_analyze', methods=['POST'])
 def fetch_and_analyze():
     data = request.json
+    owner = data.get('owner')
     repo = data.get('repo')
     file_path = data.get('file_path')
 
@@ -29,9 +30,10 @@ def fetch_and_analyze():
     print(Config.GITHUB_TOKEN)
     print(Config.OPENAI_API_KEY)
 
+    # Download contributing.md and related files
+    documents = github_service.download_recursive(owner, repo, file_path)
+
     return f"<p>{data}</p>"
-    # # Download contributing.md and related files
-    # documents = github_service.download_recursive(repo, file_path)
 
     # # Send the documents to OpenAI for processing
     # result = openai_service.process_documents(system_prompt, user_prompt, documents)

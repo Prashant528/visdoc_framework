@@ -9,8 +9,8 @@ class GitHubService:
             "Accept": "application/vnd.github.v3+json"
         }
 
-    def get_file_content(self, repo, path):
-        url = f"{self.base_url}/repos/{repo}/contents/{path}"
+    def get_file_content(self, owner, repo, path):
+        url = f"{self.base_url}/repos/{owner}/{repo}/contents/{path}"
         response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
             content = response.json()
@@ -23,11 +23,12 @@ class GitHubService:
         # (Using regex or markdown parsing libraries)
         pass
 
-    def download_recursive(self, repo, file_path, depth=0):
+    def download_recursive(self, owner, repo, file_path, depth=0):
         if depth > 5:  # To avoid infinite recursion
             return
         
-        content = self.get_file_content(repo, file_path)
+        content = self.get_file_content(owner, repo, file_path)
+        print(content)
         if not content:
             return
         
