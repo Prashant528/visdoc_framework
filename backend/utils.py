@@ -7,3 +7,6 @@ def extract_md_links(content):
 
 def is_md_or_wiki(link):
     return link.endswith('.md') or 'wiki' in link
+
+def parse_openai_json(json_reply):
+    pass

@@ -27,15 +27,11 @@ def fetch_and_analyze():
         return jsonify({"error": "Missing required parameters"}), 400
 
     # Download contributing.md and related files PTANDAN(remove the below comment)
-    # documents = github_service.download_recursive(owner, repo, file_path)
-
-    documents = ''
-    system_prompt = openai_service.fetch_system_prompt()
-    user_prompt = openai_service.fetch_user_prompt()
+    documents = github_service.download_recursive(owner, repo, file_path)
 
     # Send the documents to OpenAI for processing
-    result = openai_service.process_documents(system_prompt, user_prompt, documents)
-    return f"<p>{data}</p><br/><p>{result}</p>"
+    open_ai_response = openai_service.process_documents(documents)
+    return f"<p>{data}</p><br/><p>{open_ai_response}</p>"
 
     # return jsonify({"result": result})
 

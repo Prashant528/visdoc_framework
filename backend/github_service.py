@@ -50,22 +50,26 @@ class GitHubService:
         if not content:
             return
         
-        abs_links, relative_links = self.extract_links(content)
-        print("Absolute links found:")
-        # for link in abs_links:
-        #     print(link)
+        # PTANDAN UNComment below section to go deeper on links
+        #------------------------------
+        # abs_links, relative_links = self.extract_links(content)
+        # print("Absolute links found:")
+        # # for link in abs_links:
+        # #     print(link)
         
-        print("Relative links found: ")
-        for link in relative_links:
-            print(link)
-            #TODO: Currently looking at the relative links only. Need to do for absolute links if needs arise.
-            if link.endswith('.md') or 'wiki' in link:
-                #create a new file path based on the relative directory.
-                new_file_path = self.create_new_filepath(file_path, link)
-                print("New file paths: ", new_file_path)
-                self.download_recursive(owner, repo, new_file_path, depth + 1)
+        # print("Relative links found: ")
+        # for link in relative_links:
+        #     print(link)
+        #     #TODO: Currently looking at the relative links only. Need to do for absolute links if needs arise.
+        #     if link.endswith('.md') or 'wiki' in link:
+        #         #create a new file path based on the relative directory.
+        #         new_file_path = self.create_new_filepath(file_path, link)
+        #         print("New file paths: ", new_file_path)
+        #         self.download_recursive(owner, repo, new_file_path, depth + 1)
+        #------------------------------
 
-        return 'Hello'
+
+        return content
 
     def create_new_filepath(self, old_file_path, relative_link):
         new_file_path = urljoin(old_file_path, relative_link)
