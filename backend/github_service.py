@@ -1,4 +1,5 @@
 import requests
+import re
 from urllib.parse import urljoin
 
 class GitHubService:
@@ -11,6 +12,7 @@ class GitHubService:
 
     def get_file_content(self, owner, repo, path):
         url = f"{self.base_url}/repos/{owner}/{repo}/contents/{path}"
+        print("Downloading file: ", url)
         response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
             content = response.json()
@@ -19,25 +21,52 @@ class GitHubService:
         return None
 
     def extract_links(self, content):
-        # Extract links to .md files and GitHub wiki pages from content
-        # (Using regex or markdown parsing libraries)
-        pass
+        # Regular expression to match markdown links: [text](link)
+        link_pattern = r'\[.*?\]\((.*?)\)'
+
+        # Find all links in the markdown content
+        raw_links = re.findall(link_pattern, content)
+
+        # Normalize the links
+        abs_links = set()
+        relative_links = set()
+        for link in raw_links:
+            if link.startswith(('http://', 'https://')):
+                # If the link is an absolute URL, add it directly
+                abs_links.add(link)
+            else:
+                # Otherwise, add it to relative links
+                relative_links.add(link)
+
+        return abs_links, relative_links
 
     def download_recursive(self, owner, repo, file_path, depth=0):
-        if depth > 5:  # To avoid infinite recursion
+        
+        if depth > 1:  # To avoid infinite recursion
             return
         
         content = self.get_file_content(owner, repo, file_path)
-        print(content)
+        # print(content)
         if not content:
             return
         
-        links = self.extract_links(content)
-        for link in links:
+        abs_links, relative_links = self.extract_links(content)
+        print("Absolute links found:")
+        # for link in abs_links:
+        #     print(link)
+        
+        print("Relative links found: ")
+        for link in relative_links:
+            print(link)
+            #TODO: Currently looking at the relative links only. Need to do for absolute links if needs arise.
             if link.endswith('.md') or 'wiki' in link:
-                new_file_path = self.convert_to_file_path(link, repo)
-                self.download_recursive(repo, new_file_path, depth + 1)
+                #create a new file path based on the relative directory.
+                new_file_path = self.create_new_filepath(file_path, link)
+                print("New file paths: ", new_file_path)
+                self.download_recursive(owner, repo, new_file_path, depth + 1)
 
-    def convert_to_file_path(self, link, repo):
-        # Convert GitHub links to file paths (to handle relative paths)
-        pass
+
+    def create_new_filepath(self, old_file_path, relative_link):
+        new_file_path = urljoin(old_file_path, relative_link)
+        return new_file_path
+    
