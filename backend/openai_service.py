@@ -19,6 +19,7 @@ class OpenAIService:
             # ]
             messages = full_prompt
         )
+        print(response.choices[0].message.content)
         return response.choices[0].message.content
 
     def add_single_doc_to_prompt(self, prompt, doc):

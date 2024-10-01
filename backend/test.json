@@ -1,0 +1,276 @@
+{
+    "flow": {
+        "flow": [
+            {
+                "edges": [
+                    {
+                        "source": "Read the Code of Conduct",
+                        "target": "Set Up Engine Development Environment"
+                    },
+                    {
+                        "source": "Set Up Engine Development Environment",
+                        "target": "Set Up Framework Development Environment"
+                    },
+                    {
+                        "source": "Set Up Framework Development Environment",
+                        "target": "Familiarize with Tree Hygiene"
+                    },
+                    {
+                        "source": "Familiarize with Tree Hygiene",
+                        "target": "Review Style Guide"
+                    },
+                    {
+                        "source": "Review Style Guide",
+                        "target": "Use Flutter Design Doc Template"
+                    }
+                ],
+                "sequence": "Setting Up the Development Environment"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Quality Assurance Channel",
+                        "target": "File Bug Reports"
+                    },
+                    {
+                        "source": "File Bug Reports",
+                        "target": "Submit Test Cases"
+                    }
+                ],
+                "sequence": "Quality Assurance"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Triage Channel",
+                        "target": "Read Code of Conduct"
+                    },
+                    {
+                        "source": "Read Code of Conduct",
+                        "target": "Help with Triage"
+                    },
+                    {
+                        "source": "Help with Triage",
+                        "target": "Familiarize with Issue Hygiene"
+                    },
+                    {
+                        "source": "Familiarize with Issue Hygiene",
+                        "target": "Gain Contributor Access"
+                    }
+                ],
+                "sequence": "Triage Process"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Developer Relations Channel",
+                        "target": "Create Content"
+                    },
+                    {
+                        "source": "Create Content",
+                        "target": "Answer Questions in Forums"
+                    }
+                ],
+                "sequence": "Developer Outreach"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Discord for API Docs",
+                        "target": "Read the Style Guide"
+                    },
+                    {
+                        "source": "Read the Style Guide",
+                        "target": "Improve API Documentation"
+                    },
+                    {
+                        "source": "Improve API Documentation",
+                        "target": "Add Sample Code and Diagrams"
+                    }
+                ],
+                "sequence": "API Documentation"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Releases Channel",
+                        "target": "Participate in Release Activities"
+                    }
+                ],
+                "sequence": "Release Process"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Discord for Social Events",
+                        "target": "Plan Contributors Interactions"
+                    }
+                ],
+                "sequence": "Social Events"
+            }
+        ],
+        "summary": {
+            "Add Sample Code and Diagrams": "Enhance API docs with sample code and diagrams. These elements significantly aid in understanding our APIs and their usage. Creating diagrams from Flutter code and adding them can lend visual clarity to the documentation and attract more contributors.",
+            "Answer Questions in Forums": "Being present in various forums allows you to assist others with their queries. You can participate in discussions on platforms like Stack Overflow and Reddit, enhancing the community’s knowledge and supportive atmosphere. This outreach fosters a welcoming environment for new developers.",
+            "Create Content": "Engage in content creation as part of your outreach activities. This might include writing articles, creating videos, or answering FAQs. Your contributions in these areas help raise awareness and understanding of Flutter in the developer community.",
+            "Familiarize with Issue Hygiene": "Understanding issue hygiene will help you grasp important GitHub labels and milestones. It forms the basis of a well-maintained issue database. Knowledge in this area is crucial for effectively triaging bugs and coordinating development efforts.",
+            "Familiarize with Tree Hygiene": "Tree hygiene is crucial for maintaining the quality of contributions. This guide covers best practices for landing a pull request, conducting code reviews, and handling various issues like regressions and failures in tests after commit. It's essential to understand these practices to ensure smooth procedural adherence within the project.",
+            "File Bug Reports": "One of your primary responsibilities in quality assurance will be creating bug reports. Thoroughly testing new releases and identifying regressions will help improve the overall quality of Flutter. Don't hesitate to submit bug reports as you discover issues.",
+            "Gain Contributor Access": "With demonstrated commitment and trust, you'll eventually be invited to gain commit access. This step ensures that you can contribute more directly and impactfully to the project's evolution when you’ve shown consistent engagement.",
+            "Help with Triage": "When participating in triage, focus on validating bug reports and reproducing issues. Your insights will help ensure our issues list remains relevant and actionable. Keep communicating in the channel to share your progress.",
+            "Improve API Documentation": "Contributing to API documentation could involve reviewing what we've written and identifying areas needing clarity or examples. Regularly using Flutter while documenting enhances the relevance and accuracy of the information shared. Your insights shape a clearer understanding for users.",
+            "Join Developer Relations Channel": "If you're interested in outreach, join the #hackers-devrel channel on Discord. This is your starting point for engaging with other advocates for Flutter and coordinating outreach efforts. Share your interests to find collaboration opportunities.",
+            "Join Discord for API Docs": "To improve API documentation, introduce yourself on the Discord and express your eagerness to work in this area. Collaboration with other developers can help refine documentation quality. Engaging with community feedback will bolster your contributions.",
+            "Join Discord for Social Events": "If you are interested in enhancing community interactions, join our Discord to plan social events. Regular engagements like video chats and tech talks cultivate a vibrant contributor community. Your initiative in this area can significantly uplift community dynamics.",
+            "Join Quality Assurance Channel": "Participating in quality assurance is a great way to contribute, especially when testing beta releases. You can share your efforts and collaborate with other contributors in the dedicated #quality-assurance channel on Discord. Engage with the community and get feedback as you test and report bugs.",
+            "Join Releases Channel": "To participate in the release process, engaging in the #hackers-releases Discord channel is vital. Here, your contributions could involve coordinating releases or drafting related communications. Contributing this way allows you to impact Flutter's delivery and visibility in the community.",
+            "Join Triage Channel": "To assist with our issue database, jump into the #hackers-triage Discord channel. This is where you'll start engaging with bug reports and reproducing issues. Being proactive in this role significantly aids our engineers in staying organized with reported bugs.",
+            "Participate in Release Activities": "Your involvement in release activities could encompass multiple responsibilities, from writing notes to managing release tooling. Contributing in this area helps ensure that Flutter's releases are well-documented and effectively communicated. Engaging with others in this channel can lead to collaborative opportunities.",
+            "Plan Contributors Interactions": "Organize social interactions within the Flutter contributor community, such as tech talks or community video chats. Facilitating these platforms encourages networking and learning among contributors. Engaging actively enhances the overall collaborative spirit.",
+            "Read the Code of Conduct": "Before contributing, it’s important to familiarize yourself with our code of conduct. This document outlines our expectations for a gracious, respectful, and professional environment. It includes our policy for conflict resolution and encourages contributors to ask questions as necessary.",
+            "Read the Style Guide": "A solid command of English and attention to detail is essential for contributing to API documentation. Through our style guide, you’ll understand the language conventions we adhere to while enhancing our documentation pace. Reading this guide is a prerequisite to effective contributions.",
+            "Review Style Guide": "Understanding our style guide is key to contributing quality code to Flutter. This document provides guidance on API design and code formatting among other stylistic nuances. Make sure to read through it to align your contributions with the expected coding standards.",
+            "Set Up Engine Development Environment": "The first technical step to contribute to Flutter’s engine is setting up your development environment. This involves following specific instructions outlined in our contributing documentation. Make sure your system is configured to work with Flutter's engine, which primarily uses C++, Java, and Objective-C.",
+            "Set Up Framework Development Environment": "Once you've set up the engine, if you're focusing on the Flutter framework, move on to configuring your framework development environment. This step delineates how to set up your machine to write code mainly in Dart. Completing this setup will enable you to start contributing to the Flutter framework effectively.",
+            "Submit Test Cases": "Contributing test cases helps elevate our code quality. If you're inclined to write tests, you can create pull requests to submit your work. Check the guidelines for setting up your environment to get started on writing effective tests.",
+            "Use Flutter Design Doc Template": "For more substantial design changes, use the provided Flutter design document template. This template helps articulate your proposed changes before coding. Having a clear proposal increases the chances of your design being accepted and implemented."
+        }
+    },
+    "summary": {
+        "flow": [
+            {
+                "edges": [
+                    {
+                        "source": "Read the Code of Conduct",
+                        "target": "Set Up Engine Development Environment"
+                    },
+                    {
+                        "source": "Set Up Engine Development Environment",
+                        "target": "Set Up Framework Development Environment"
+                    },
+                    {
+                        "source": "Set Up Framework Development Environment",
+                        "target": "Familiarize with Tree Hygiene"
+                    },
+                    {
+                        "source": "Familiarize with Tree Hygiene",
+                        "target": "Review Style Guide"
+                    },
+                    {
+                        "source": "Review Style Guide",
+                        "target": "Use Flutter Design Doc Template"
+                    }
+                ],
+                "sequence": "Setting Up the Development Environment"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Quality Assurance Channel",
+                        "target": "File Bug Reports"
+                    },
+                    {
+                        "source": "File Bug Reports",
+                        "target": "Submit Test Cases"
+                    }
+                ],
+                "sequence": "Quality Assurance"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Triage Channel",
+                        "target": "Read Code of Conduct"
+                    },
+                    {
+                        "source": "Read Code of Conduct",
+                        "target": "Help with Triage"
+                    },
+                    {
+                        "source": "Help with Triage",
+                        "target": "Familiarize with Issue Hygiene"
+                    },
+                    {
+                        "source": "Familiarize with Issue Hygiene",
+                        "target": "Gain Contributor Access"
+                    }
+                ],
+                "sequence": "Triage Process"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Developer Relations Channel",
+                        "target": "Create Content"
+                    },
+                    {
+                        "source": "Create Content",
+                        "target": "Answer Questions in Forums"
+                    }
+                ],
+                "sequence": "Developer Outreach"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Discord for API Docs",
+                        "target": "Read the Style Guide"
+                    },
+                    {
+                        "source": "Read the Style Guide",
+                        "target": "Improve API Documentation"
+                    },
+                    {
+                        "source": "Improve API Documentation",
+                        "target": "Add Sample Code and Diagrams"
+                    }
+                ],
+                "sequence": "API Documentation"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Releases Channel",
+                        "target": "Participate in Release Activities"
+                    }
+                ],
+                "sequence": "Release Process"
+            },
+            {
+                "edges": [
+                    {
+                        "source": "Join Discord for Social Events",
+                        "target": "Plan Contributors Interactions"
+                    }
+                ],
+                "sequence": "Social Events"
+            }
+        ],
+        "summary": {
+            "Add Sample Code and Diagrams": "Enhance API docs with sample code and diagrams. These elements significantly aid in understanding our APIs and their usage. Creating diagrams from Flutter code and adding them can lend visual clarity to the documentation and attract more contributors.",
+            "Answer Questions in Forums": "Being present in various forums allows you to assist others with their queries. You can participate in discussions on platforms like Stack Overflow and Reddit, enhancing the community’s knowledge and supportive atmosphere. This outreach fosters a welcoming environment for new developers.",
+            "Create Content": "Engage in content creation as part of your outreach activities. This might include writing articles, creating videos, or answering FAQs. Your contributions in these areas help raise awareness and understanding of Flutter in the developer community.",
+            "Familiarize with Issue Hygiene": "Understanding issue hygiene will help you grasp important GitHub labels and milestones. It forms the basis of a well-maintained issue database. Knowledge in this area is crucial for effectively triaging bugs and coordinating development efforts.",
+            "Familiarize with Tree Hygiene": "Tree hygiene is crucial for maintaining the quality of contributions. This guide covers best practices for landing a pull request, conducting code reviews, and handling various issues like regressions and failures in tests after commit. It's essential to understand these practices to ensure smooth procedural adherence within the project.",
+            "File Bug Reports": "One of your primary responsibilities in quality assurance will be creating bug reports. Thoroughly testing new releases and identifying regressions will help improve the overall quality of Flutter. Don't hesitate to submit bug reports as you discover issues.",
+            "Gain Contributor Access": "With demonstrated commitment and trust, you'll eventually be invited to gain commit access. This step ensures that you can contribute more directly and impactfully to the project's evolution when you’ve shown consistent engagement.",
+            "Help with Triage": "When participating in triage, focus on validating bug reports and reproducing issues. Your insights will help ensure our issues list remains relevant and actionable. Keep communicating in the channel to share your progress.",
+            "Improve API Documentation": "Contributing to API documentation could involve reviewing what we've written and identifying areas needing clarity or examples. Regularly using Flutter while documenting enhances the relevance and accuracy of the information shared. Your insights shape a clearer understanding for users.",
+            "Join Developer Relations Channel": "If you're interested in outreach, join the #hackers-devrel channel on Discord. This is your starting point for engaging with other advocates for Flutter and coordinating outreach efforts. Share your interests to find collaboration opportunities.",
+            "Join Discord for API Docs": "To improve API documentation, introduce yourself on the Discord and express your eagerness to work in this area. Collaboration with other developers can help refine documentation quality. Engaging with community feedback will bolster your contributions.",
+            "Join Discord for Social Events": "If you are interested in enhancing community interactions, join our Discord to plan social events. Regular engagements like video chats and tech talks cultivate a vibrant contributor community. Your initiative in this area can significantly uplift community dynamics.",
+            "Join Quality Assurance Channel": "Participating in quality assurance is a great way to contribute, especially when testing beta releases. You can share your efforts and collaborate with other contributors in the dedicated #quality-assurance channel on Discord. Engage with the community and get feedback as you test and report bugs.",
+            "Join Releases Channel": "To participate in the release process, engaging in the #hackers-releases Discord channel is vital. Here, your contributions could involve coordinating releases or drafting related communications. Contributing this way allows you to impact Flutter's delivery and visibility in the community.",
+            "Join Triage Channel": "To assist with our issue database, jump into the #hackers-triage Discord channel. This is where you'll start engaging with bug reports and reproducing issues. Being proactive in this role significantly aids our engineers in staying organized with reported bugs.",
+            "Participate in Release Activities": "Your involvement in release activities could encompass multiple responsibilities, from writing notes to managing release tooling. Contributing in this area helps ensure that Flutter's releases are well-documented and effectively communicated. Engaging with others in this channel can lead to collaborative opportunities.",
+            "Plan Contributors Interactions": "Organize social interactions within the Flutter contributor community, such as tech talks or community video chats. Facilitating these platforms encourages networking and learning among contributors. Engaging actively enhances the overall collaborative spirit.",
+            "Read the Code of Conduct": "Before contributing, it’s important to familiarize yourself with our code of conduct. This document outlines our expectations for a gracious, respectful, and professional environment. It includes our policy for conflict resolution and encourages contributors to ask questions as necessary.",
+            "Read the Style Guide": "A solid command of English and attention to detail is essential for contributing to API documentation. Through our style guide, you’ll understand the language conventions we adhere to while enhancing our documentation pace. Reading this guide is a prerequisite to effective contributions.",
+            "Review Style Guide": "Understanding our style guide is key to contributing quality code to Flutter. This document provides guidance on API design and code formatting among other stylistic nuances. Make sure to read through it to align your contributions with the expected coding standards.",
+            "Set Up Engine Development Environment": "The first technical step to contribute to Flutter’s engine is setting up your development environment. This involves following specific instructions outlined in our contributing documentation. Make sure your system is configured to work with Flutter's engine, which primarily uses C++, Java, and Objective-C.",
+            "Set Up Framework Development Environment": "Once you've set up the engine, if you're focusing on the Flutter framework, move on to configuring your framework development environment. This step delineates how to set up your machine to write code mainly in Dart. Completing this setup will enable you to start contributing to the Flutter framework effectively.",
+            "Submit Test Cases": "Contributing test cases helps elevate our code quality. If you're inclined to write tests, you can create pull requests to submit your work. Check the guidelines for setting up your environment to get started on writing effective tests.",
+            "Use Flutter Design Doc Template": "For more substantial design changes, use the provided Flutter design document template. This template helps articulate your proposed changes before coding. Having a clear proposal increases the chances of your design being accepted and implemented."
+        }
+    }
+}

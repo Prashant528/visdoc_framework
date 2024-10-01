@@ -39,7 +39,7 @@ class Prompts:
         },
         {
             "role": "user",
-            "content": '''After I provide you the document,  provide me another JSON too that maps those exact action steps to their summary. The summary should sound like instructions for the newcomers on what steps they can take to complete that action step. A sample JSON for the summary looks like this { "action step": "summary"}. So, your response should contain two JSON objects, 'flow' and 'summary' , and nothing else'''
+            "content": '''After I provide you the document,  provide me another JSON too that maps those exact action steps to their summary. The summary should sound like instructions for the newcomers on what steps they can take to complete that action step. Each summary should contain at least 3 sentences from the document. Please do not add any extra sentences. If there are less than three sentences, merge the action step with other closely related action step and create a new bigger action step. A sample JSON for the summary looks like this { "action step": "summary"}. So, your response should contain two JSON objects, 'flow' and 'summary' , and nothing else'''
         },
         {
             "role": "assistant",

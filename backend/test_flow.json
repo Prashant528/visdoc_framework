@@ -1,0 +1,117 @@
+{
+    "flow": [
+        {
+            "edges": [
+                {
+                    "source": "Join the Discord channel",
+                    "target": "Read the code of conduct"
+                },
+                {
+                    "source": "Read the code of conduct",
+                    "target": "Familiarize with issue hygiene"
+                },
+                {
+                    "source": "Familiarize with issue hygiene",
+                    "target": "Setting up engine development environment"
+                },
+                {
+                    "source": "Setting up engine development environment",
+                    "target": "Setting up framework development environment"
+                },
+                {
+                    "source": "Setting up framework development environment",
+                    "target": "Check tree hygiene"
+                },
+                {
+                    "source": "Check tree hygiene",
+                    "target": "Read style guide"
+                },
+                {
+                    "source": "Read style guide",
+                    "target": "Use Flutter design doc template"
+                }
+            ],
+            "sequence": "Setting Up Development Environment"
+        },
+        {
+            "edges": [
+                {
+                    "source": "File bug reports",
+                    "target": "Join quality assurance Discord channel"
+                },
+                {
+                    "source": "Join quality assurance Discord channel",
+                    "target": "Contribute test cases"
+                }
+            ],
+            "sequence": "Quality Assurance"
+        },
+        {
+            "edges": [
+                {
+                    "source": "Join developer relations Discord channel",
+                    "target": "Describe your interest"
+                },
+                {
+                    "source": "Describe your interest",
+                    "target": "Collaborate and coordinate efforts"
+                }
+            ],
+            "sequence": "Outreach and Community Engagement"
+        },
+        {
+            "edges": [
+                {
+                    "source": "Join Discord channels for API documentation",
+                    "target": "Read style guide for API documentation"
+                },
+                {
+                    "source": "Read style guide for API documentation",
+                    "target": "Use Flutter and document answers to questions"
+                }
+            ],
+            "sequence": "API Documentation Contribution"
+        },
+        {
+            "edges": [
+                {
+                    "source": "Reach out on releases Discord channel",
+                    "target": "Participate in release activities"
+                }
+            ],
+            "sequence": "Release Process Participation"
+        },
+        {
+            "edges": [
+                {
+                    "source": "Join Discord and ping Hixie",
+                    "target": "Organize social events"
+                }
+            ],
+            "sequence": "Social Engagement in Community"
+        }
+    ],
+    "summary": {
+        "Check tree hygiene": "Understanding tree hygiene will guide you on how to handle pull requests (PRs) and code reviews properly. This knowledge is essential to maintain quality and manage the codebase effectively. Follow the guidelines included in the documentation to navigate post-commit test failures and regression handling.",
+        "Collaborate and coordinate efforts": "Working alongside others can improve the quality of your contributions. Engaging in collaborative projects often leads to knowledge sharing and skill development. Don't hesitate to coordinate efforts with others who share your interests.",
+        "Contribute test cases": "You are encouraged to contribute test cases to improve Flutter's test coverage. Writing tests for existing issues is a valuable contribution that enhances the overall project quality. Consult the guidelines available in the QA documentation to understand how to contribute meaningfully.",
+        "Describe your interest": "It's important to communicate your interests clearly to facilitate collaboration. Doing so can help you find like-minded contributors and make a larger impact within the community. Be proactive in reaching out and sharing what you'd like to work on.",
+        "Familiarize with issue hygiene": "Gaining knowledge about issue hygiene is vital for contributing effectively. It includes understanding the significance of various GitHub labels and the expectations when managing issues. This preparation will ease your involvement in the issue database.",
+        "File bug reports": "File bug reports to document any issues encountered while using Flutter. Detailed bug reports are critical for the development team to address problems effectively. They should include steps to reproduce the bug, which will immensely aid in triage efforts.",
+        "Join Discord and ping Hixie": "To contribute to social interactions within the community, join our Discord server and reach out to Hixie. This engagement could lead to organizing events or tech talks that enhance community engagement. Your contributions to social events can create a more cohesive and supportive community.",
+        "Join Discord channels for API documentation": "To contribute to API documentation, make sure to join the relevant Discord channels. Engaging with the documentation community will help clarify the contribution process and standards required. Introduce yourself and convey your intentions to start contributing.",
+        "Join developer relations Discord channel": "If you're passionate about outreach, join the developer relations Discord channel. This platform allows you to connect with others interested in advocacy for Flutter. Once familiar, you can begin to contribute and create content across various platforms.",
+        "Join quality assurance Discord channel": "Participate in the quality assurance channel on Discord to engage with other testers. This community is instrumental when beta releases are announced, allowing you to communicate and coordinate testing efforts effectively. Regular engagement can yield insightful discussions about quality assurance practices.",
+        "Join the Discord channel": "To get started, join the Discord server provided for contributors. Begin by networking with the community to gather information and resources. Engaging with others will help you understand the overall process and community dynamics.",
+        "Organize social events": "Organize social events to foster connections among the Flutter contributor community. These activities can take various forms, including webinars or informal discussions. Such initiatives promote collaboration and deeper relationships within the community.",
+        "Participate in release activities": "Engaging in release activities may include writing notes and coordinating generation efforts. Each task helps contribute to the seamless rollout of new features and fixes for Flutter. Collaborate with others to maximize your contributions during release cycles.",
+        "Reach out on releases Discord channel": "If you're interested in the release process, connect with the release team via the specified Discord channel. This initial outreach can open up opportunities to assist in various release-related tasks. Active participation in this area can significantly improve your understanding of software delivery.",
+        "Read style guide": "Review our style guide to align your contributions with Flutter's standards for API design and code formatting. Adhering to this guide enhances the quality of your code and ensures consistency across the project. A well-structured approach to your contributions will be appreciated by the community.",
+        "Read style guide for API documentation": "Before writing API documentation, familiarize yourself with our style guide. Understanding the expectations regarding language and grammar conventions will improve the clarity and quality of your writing. This preparation sets a firm foundation for your documentation contributions.",
+        "Read the code of conduct": "Before participating, it's crucial to read our code of conduct. This document outlines the expected behavior, ensuring that all interactions are respectful and professional. As a member of this team, you represent Flutter with your actions.",
+        "Setting up engine development environment": "Follow the provided documentation to set up your engine development environment. This involves configuring your computer to work on Flutter's engine, which mainly uses languages like C++, Java, and Objective-C. If you're focused on the Flutter framework exclusively, this step is optional.",
+        "Setting up framework development environment": "This step details how to configure your environment for developing Flutter's framework, mainly using Dart. Ensuring that your setup is proper will facilitate more effective coding. Consult the documentation to manage your environment efficiently.",
+        "Use Flutter and document answers to questions": "A productive approach to improving documentation involves using Flutter and documenting the answers to your questions. This method ensures that any ambiguities are clarified and preserved for future users. Capturing this information can enhance the user experience and resource richness.",
+        "Use Flutter design doc template": "When proposing intricate changes or new features, utilize the Flutter design doc template. This practice ensures that all technical designs are documented comprehensively. Adhering to this template fosters better planning and communication regarding new developments."
+    }
+}
