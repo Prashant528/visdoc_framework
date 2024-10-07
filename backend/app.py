@@ -3,9 +3,11 @@ from github_service import GitHubService
 from openai_service import OpenAIService
 from config import Config
 from utils import parse_openai_single_json, parse_github_link
+from flask_cors import CORS
 
 # Create Flask app
 app = Flask(__name__)
+CORS(app) 
 
 # Initialize services
 github_service = GitHubService(Config.GITHUB_TOKEN)
@@ -20,10 +22,12 @@ def print_hello():
 @app.route('/fetch_and_analyze', methods=['POST'])
 def fetch_and_analyze():
     data = request.json
+    print(data)
     # owner = data.get('owner')
     # repo = data.get('repo')
     # file_path = data.get('file_path')
-    repo_link = data.get('link')
+    repo_link = data.get('repo_link')
+    print("Repo Link = ", repo_link)
     owner, repo, file_path = parse_github_link(repo_link)
 
     print("Owner:", owner, "REpo: ", repo, "File: ", file_path)
@@ -42,4 +46,4 @@ def fetch_and_analyze():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(port=8080)
