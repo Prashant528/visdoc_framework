@@ -20,6 +20,9 @@ import Modal from './Modal';
 const repo_name= 'Flutter'
 
 function NodeWithToolbar({ data,handleOpenModal }) {
+  const openModal = () => {
+    handleOpenModal(data.label); // Call the passed function with the label
+  };
 
   return (
     <div style={{ padding: 10, border: '1px solid black', borderRadius: 5 }}>
@@ -27,7 +30,7 @@ function NodeWithToolbar({ data,handleOpenModal }) {
         isVisible={data.forceToolbarVisible}
         position={data.toolbarPosition}
       >
-        <button onClick={handleOpenModal}>Text</button>
+        <button onClick={openModal}>Text</button>
         <button>Images</button>
         <button>Videos</button>
       </NodeToolbar>
@@ -64,10 +67,14 @@ const GraphApp = ({graph_sequences, summaries}) => {
     [],
   );
 
-  const [modalContent, setModalContent] = useState(JSON.stringify(summaries));
+  const [modalContent, setModalContent] = useState('');
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => {setOpen(false);};
-    const handleOpenModal = () => {setModalContent(modalContent);setOpen(true);};
+  const handleOpenModal = (label) => {
+    const summary = summaries[label] || 'No summary available'; // Fetch the summary using the label
+    setModalContent(summary);
+    setOpen(true);
+  };
   // const nodeTypes = useMemo(() => ({ toolbar_node: NodeWithToolbar }), []);
 
     // Modify node colors based on active sequence
