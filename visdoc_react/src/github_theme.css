@@ -679,7 +679,16 @@
     z-index: 76;
     border-radius: 6px;
   }
-  .span-code {
+  .div-item-link_doc {
+    position: absolute;
+    width: 75px;
+    top: 10px;
+    bottom: 9px;
+    left: 915px;
+    z-index: 76;
+    border-radius: 6px;
+  }
+  .span-doc {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -687,7 +696,7 @@
     width: 35.2px;
     height: 30px;
     top: 0;
-    left: calc(50% - 5.5px);
+    left: 65px;
     color: #1f2328;
     font-family: Noto Sans, var(--default-font-family);
     font-size: 14px;
@@ -697,6 +706,7 @@
     white-space: nowrap;
     z-index: 79;
   }
+  
   .div-flex-column-f {
     position: absolute;
     width: 100%;
@@ -723,9 +733,21 @@
     background-size: 100% 100%;
     z-index: 78;
   }
+
+  .div-vector-doc {
+    position: relative;
+    width: 22px;
+    height: 17px;
+    margin: 0px 0 0 0px;
+    background: url(../assets/images/flow-chart.png)
+      no-repeat center;
+    background-size: 100% 100%;
+    z-index: 78;
+  }
+
   .div-horizontal-divider {
     position: relative;
-    width: 75px;
+    width: 150px;
     height: 2px;
     margin: 14px 0 0 0;
     background: #fd8c73;
@@ -750,6 +772,24 @@
     height: 30px;
     top: 0;
     left: calc(50% - 29.08px);
+    color: #1f2328;
+    font-family: Noto Sans, var(--default-font-family);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 83;
+  }
+  .span-code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 40.67px;
+    height: 30px;
+    top: 0;
+    left: calc(50% - 5.58px);
     color: #1f2328;
     font-family: Noto Sans, var(--default-font-family);
     font-size: 14px;

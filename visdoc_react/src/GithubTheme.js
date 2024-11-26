@@ -1,5 +1,8 @@
 import React from 'react';
 import './github_theme.css';
+import { Routes, Route } from 'react-router-dom';
+import MyForm from './MyForm';
+import ResponsePage from './ResponsePage';
 
 export default function GithubTheme() {
   return (
@@ -63,7 +66,6 @@ export default function GithubTheme() {
                   <div className='div-svg'>
                     <div className='div-vector-e' />
                   </div>
-                  <div className='div-horizontal-divider' />
                 </div>
               </div>
               <div className='div-item-link-f'>
@@ -115,9 +117,24 @@ export default function GithubTheme() {
                   <div className='vector-15' />
                 </div>
               </div>
+
+              <div className='div-item-link_doc'>
+                <span className='span-doc'>Documentation</span>
+                <div className='div-flex-column-f'>
+                  <div className='div-svg'>
+                    <div className='div-vector-doc' />
+                  </div>
+                  <div className='div-horizontal-divider' />
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
+        <Routes>
+          <Route path="/" element={<MyForm />} />
+          <Route path="/response-page" element={<ResponsePage />} />
+        </Routes>
         <div className='flex-row-f'>
           <div className='vector-16' />
           <span className='copyright'>© 2024 GitHub, Inc.</span>
