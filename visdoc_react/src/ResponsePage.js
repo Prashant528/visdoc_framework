@@ -7,7 +7,7 @@ const ResponsePage = () => {
   const { apiData } = location.state;  // Get the API response from the state
 
   let graph_sequences = apiData['flow']
-  let summaries = apiData['summary']
+  let summaries = apiData['content']
   return (
     <div>
       <h3>Contribution Workflow</h3>

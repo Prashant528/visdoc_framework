@@ -1,6 +1,6 @@
 import {MarkerType} from '@xyflow/react';
 
-const x_offset = 500
+const x_offset = 400
 const y_offset = 200
 const edge_color = '#007FFF'
 
@@ -9,19 +9,21 @@ export default function render_graph(repo_name, graph_sequences){
     //     console.log(seq['sequence'], ':' )
     // }
     let nodes = []
-    nodes.push(create_parent_node(repo_name))
+    // nodes.push(create_parent_node(repo_name))
     let edges = []
-    let center_of_y_axis = parseInt(graph_sequences.length/2) * y_offset
-    let y_start_pos = -center_of_y_axis
+    let end_of_y_axis = parseInt(graph_sequences.length/2) * y_offset
+    console.log("End of y-axis = ", end_of_y_axis)
+    let y_start_pos = -end_of_y_axis
     for (let i = 0; i < graph_sequences.length; i++) {
         // console.log(graph_sequences[i]['edges']);
+        console.log("Plotting sequence at = ", y_start_pos + i * y_offset)
         for (let j = 0; j < graph_sequences[i]['edges'].length; j++) {
 
             let edge = graph_sequences[i]['edges'][j]
             
             // create the nodes
             if(j==0){
-                let new_node = create_node(y_start_pos, i, 0, edge["source"])
+                let new_node = create_node(0-y_offset/2, 0, 0, edge["source"])
                 nodes.push(new_node)
                 new_node = create_node(y_start_pos, i, 1, edge["target"])
                 nodes.push(new_node)
