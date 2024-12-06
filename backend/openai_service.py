@@ -4,7 +4,7 @@ class OpenAIService:
     def __init__(self, api_key):
         openai.api_key = api_key
         self.prompts = Prompts()
-        self.model = "gpt-4o-mini"
+        self.model = "gpt-4o"
 
     def process_documents(self, documents):
         # prompt = self.build_prompt(system_prompt, user_prompt, documents)
@@ -17,7 +17,8 @@ class OpenAIService:
             #     {"role": "system", "content": system_prompt},
             #     {"role": "user", "content": user_prompt}
             # ]
-            messages = full_prompt
+            messages = full_prompt,
+            temperature = 0.0
         )
         print(response.choices[0].message.content)
         return response.choices[0].message.content
