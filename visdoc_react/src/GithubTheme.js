@@ -3,6 +3,7 @@ import './github_theme.css';
 import { Routes, Route } from 'react-router-dom';
 import MyForm from './MyForm';
 import ResponsePage from './ResponsePage';
+import VidCreatorPage from './VidCreatorPage';
 
 export default function GithubTheme() {
   return (
@@ -134,6 +135,8 @@ export default function GithubTheme() {
         <Routes>
           <Route path="/" element={<MyForm />} />
           <Route path="/response-page" element={<ResponsePage />} />
+          <Route path="/creator-page" element={<VidCreatorPage />} />
+
         </Routes>
         <div className='flex-row-f'>
           <div className='vector-16' />

@@ -11,6 +11,7 @@ import {
   
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useNavigate } from 'react-router-dom'; 
 
 import render_graph from './graph_generator'
 // import graph_sequences from "./dummy_data";
@@ -47,6 +48,7 @@ const nodeTypes = {
 
 
 const GraphApp = ({graph_sequences, summaries}) => {
+  const navigate = useNavigate(); 
   let graph = render_graph(repo_name, graph_sequences)
   // console.log(graph[0])
   // console.log(graph[1])
@@ -57,10 +59,19 @@ const GraphApp = ({graph_sequences, summaries}) => {
 
   const [activeSequence, setActiveSequence] = useState(null);
   const sequenceButtons = graph_sequences.map((seq, index) => (
-    <button key={index} onClick={() => setActiveSequence(seq.sequence)}>
+    <button key={index}
+     onClick={() => setActiveSequence(seq.sequence)} 
+     style={{ marginRight: '8px' }}
+     className="sequence-button" >
       {seq.sequence}
     </button>
   ));
+
+  const handleCreateVideosButtonClick = () => {
+    navigate('/creator-page', { state: { summaries: summaries } });
+    
+  };
+
 
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),
@@ -93,8 +104,33 @@ const GraphApp = ({graph_sequences, summaries}) => {
   
   return (
     <div style={{ height: 800 }}>
-    <div>
-        {sequenceButtons} {/* Render sequence buttons */}
+    <div 
+      style={{ 
+        display: 'flex', 
+        justifyContent: 'flex-start', 
+        alignItems: 'center', 
+        width: '100%' 
+      }}
+    >
+      {/* Left side: sequence buttons */}
+      <div class='sequence-buttons-container' >
+        {sequenceButtons}
+      </div>
+
+      {/* Right side: new, differently styled button */}
+      <button 
+        onClick={handleCreateVideosButtonClick} 
+        style={{ 
+          backgroundColor: '#007bff', 
+          color: '#fff', 
+          padding: '8px 16px', 
+          border: 'none', 
+          borderRadius: '4px', 
+          cursor: 'pointer' 
+        }}
+      >
+        Create Videos
+      </button>
     </div>
     <ReactFlow
       nodes={modifiedNodes}
