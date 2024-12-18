@@ -2,6 +2,8 @@
 
 import React from "react";
 import './index.css';
+import ReactMarkdown from 'react-markdown';
+
 
 const Modal = ({ isOpen, handleCloseModal, children }) => {
 	if (!isOpen) return null;
@@ -11,7 +13,8 @@ const Modal = ({ isOpen, handleCloseModal, children }) => {
 
                         <div className="modal-content">
                             <span className="close" onClick={handleCloseModal}>&times;</span>
-                            {children}
+							{/* <ReactMarkdown> {children} </ReactMarkdown>    */}
+							{children}    
                         </div>
 				
 		</div>
