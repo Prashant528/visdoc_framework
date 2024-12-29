@@ -68,7 +68,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
   ));
 
   const handleCreateVideosButtonClick = () => {
-    navigate('/creator-page', { state: { summaries: summaries } });
+    navigate('/creator-page', { state: { flow: graph_sequences, summaries: summaries } });
     
   };
 
@@ -130,6 +130,20 @@ const GraphApp = ({graph_sequences, summaries}) => {
         }}
       >
         Create Videos
+      </button>
+      <button 
+        onClick={handleCreateVideosButtonClick} 
+        style={{ 
+          backgroundColor: '#007bff', 
+          color: '#fff', 
+          padding: '8px 16px', 
+          border: 'none', 
+          borderRadius: '4px', 
+          cursor: 'pointer', 
+          margin: '0 0 0 0.5rem'
+        }}
+      >
+        Edit Texts
       </button>
     </div>
     <ReactFlow

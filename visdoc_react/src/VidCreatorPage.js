@@ -4,12 +4,14 @@ import AddImages from './AddImages'
 
 const VidCreatorPage = () => {
   const location = useLocation();
-  const { summaries } = location.state;  // Get the API response from the state
-
+  const {flow,  summaries } = location.state;  // Get the API response from the state
+  // console.log(summaries)
+  // console.log(flow)
+  
   return (
     <div>
       <h3>Video Creator Page</h3>
-      <AddImages summaries={summaries}/>
+      <AddImages flow ={flow} summaries={summaries}/>
       </div>
   );
 };

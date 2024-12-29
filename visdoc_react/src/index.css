@@ -40,6 +40,7 @@ code {
   max-height: 90vh; /* Limit the height to 90% of the viewport */
   overflow-y: auto; /* Enable scrolling if content exceeds modal height */
   z-index: 1001;
+  overflow-y: auto;
 }
 
 /* The Close Button */
@@ -83,4 +84,30 @@ code {
   flex-wrap: wrap;       /* Allows wrapping if many buttons appear */
   gap: 8px;              /* Spacing between buttons */
   margin: 16px 0;
+}
+
+.common-button {
+  display: inline-block;
+  background-color: #bbbbbb; /* Gray background */
+  color: #151313; /* White text */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.25rem 0.5rem; /* Padding for content */
+  font-size: 0.8rem; /* Small font size */
+  text-align: center; /* Center-align text */
+  line-height: 1rem; /* Line height for balanced appearance */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 0 0 0 0; /* Add space between buttons */
+}
+
+.common-button:hover {
+  background-color: #a6a6a6; /* Darker gray on hover */
+}
+
+.plus-button {
+  width: 38px;
+  height: 25px;
+  line-height: 15px; /* Center-align text vertically */
+  border-radius: 20%; /* Circular shape for + button */
+  margin-left: 0.2rem; /* Add spacing specifically for the + button */
 }

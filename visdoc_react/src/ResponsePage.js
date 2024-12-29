@@ -4,15 +4,14 @@ import GraphApp from './GraphApp';
 
 const ResponsePage = () => {
   const location = useLocation();
-  const { apiData } = location.state;  // Get the API response from the state
+  const { apiData } = location.state || {}; // Safeguard against missing state
+  const graph_sequences = apiData?.flow || [];
+  const summaries = apiData?.content || {};
 
-  let graph_sequences = apiData['flow']
-  let summaries = apiData['content']
   return (
     <div>
       <h3>Contribution Workflow</h3>
-      {/* <pre>{JSON.stringify(apiData, null, 2)}</pre> */}
-      <GraphApp graph_sequences={graph_sequences} summaries={summaries}/>
+      <GraphApp graph_sequences={graph_sequences} summaries={summaries} />
     </div>
   );
 };

@@ -1,24 +1,31 @@
-// Modal.js
-
 import React from "react";
 import './index.css';
 import ReactMarkdown from 'react-markdown';
 
-
 const Modal = ({ isOpen, handleCloseModal, children }) => {
-	if (!isOpen) return null;
+  if (!isOpen) return null;
 
-	return (
-		<div className="modal">
+  // Preprocess Markdown content
+  const preprocessMarkdown = (text) => {
+    if (!text) return '';
 
-                        <div className="modal-content">
-                            <span className="close" onClick={handleCloseModal}>&times;</span>
-							{/* <ReactMarkdown> {children} </ReactMarkdown>    */}
-							{children}    
-                        </div>
-				
-		</div>
-	);
+    // Replace <br /> or <br> with Markdown line breaks
+    let updatedText = text.replace(/<br\s*\/?>/g, '  \n');
+
+    // Add a blank line after headers if missing
+    updatedText = updatedText.replace(/(#+\s.*)(?=\n\S)/g, '$1\n');
+
+    return updatedText;
+  };
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={handleCloseModal}>&times;</span>
+        <ReactMarkdown>{preprocessMarkdown(children)}</ReactMarkdown>
+      </div>
+    </div>
+  );
 };
 
 export default Modal;
