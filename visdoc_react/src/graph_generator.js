@@ -66,15 +66,15 @@ function create_edge(source, target){
         id: source+'_'+target,
         source: source,
         target: target,
-        type: 'smoothstep',
+        type: 'bezier',
         markerEnd: {
             type: MarkerType.ArrowClosed,
-            width: 20,
-            height: 20,
+            width: 15,
+            height: 25,
             color: edge_color,
         },
         style: {
-        strokeWidth: 2,
+        strokeWidth: 3,
         stroke: edge_color,
         },
       })

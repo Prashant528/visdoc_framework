@@ -111,3 +111,33 @@ code {
   border-radius: 20%; /* Circular shape for + button */
   margin-left: 0.2rem; /* Add spacing specifically for the + button */
 }
+
+.node-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.edge-hover:hover {
+  stroke: #14cfa0;
+}
+
+/* Pop-up effect for highlighted nodes */
+.highlighted-node {
+  background-color: #1e4ea7 !important;
+  border: 1.5px solid #61636d;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  height: 72px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.highlighted-node:hover {
+  transform: scale(1.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.highlighted-node .new_node_label {
+  font-size: 22px;
+  font-weight: normal;
+  color: #353030;
+}

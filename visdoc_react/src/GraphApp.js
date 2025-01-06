@@ -26,7 +26,17 @@ function NodeWithToolbar({ data,handleOpenModal }) {
   };
 
   return (
-    <div style={{ padding: 10, border: '1px solid black', borderRadius: 5 }}>
+    <div
+      style={{
+        padding: '20px',
+        border: '2px solid black',
+        borderRadius: '20px',
+        backgroundColor: '#f0f8ff',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+        transition: 'transform 0.2s ease-in-out',
+      }}
+      className="node-hover"
+    >
       <NodeToolbar
         isVisible={data.forceToolbarVisible}
         position={data.toolbarPosition}
@@ -61,7 +71,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
   const sequenceButtons = graph_sequences.map((seq, index) => (
     <button key={index}
      onClick={() => setActiveSequence(seq.sequence)} 
-     style={{ marginRight: '8px' }}
+     style={{ marginRight: '2px' }}
      className="sequence-button" >
       {seq.sequence}
     </button>
@@ -90,16 +100,29 @@ const GraphApp = ({graph_sequences, summaries}) => {
 
     // Modify node colors based on active sequence
     const modifiedNodes = nodes.map((node) => {
-        if (activeSequence) {
-        const sequenceData = graph_sequences.find(seq => seq.sequence === activeSequence);
-        if (sequenceData) {
-            // Check if the node label is part of the active sequence
-            if (sequenceData.edges.some(edge => edge.source === node.data.label || edge.target === node.data.label)) {
-            return { ...node, style: { ...node.style, background: 'lightblue' } }; // Change color for active nodes
-            }
-        }
-        }
-        return node; // Return the original node if not part of the active sequence
+      if (activeSequence) {
+        const sequenceEdges = graph_sequences.find((seq) => seq.sequence === activeSequence).edges;
+        const isActive = sequenceEdges.some(edge => edge.source === node.id || edge.target === node.id);
+        return {
+          ...node,
+          className: isActive ? 'highlighted-node' : '',
+        };
+      }
+      return node;
+    });
+  
+    // Modify edges based on active sequence
+    const modifiedEdges = edges.map((edge) => {
+      if (activeSequence) {
+        const sequenceEdges = graph_sequences.find((seq) => seq.sequence === activeSequence).edges;
+        const isActive = sequenceEdges.some(seqEdge => seqEdge.source === edge.source && seqEdge.target === edge.target);
+  
+        return {
+          ...edge,
+          style: { ...edge.style, stroke: isActive ? '#ff7f50' : '#ccc', strokeWidth: isActive ? 4 : 3 },
+        };
+      }
+      return edge;
     });
   
   return (
@@ -125,6 +148,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
           color: '#fff', 
           padding: '8px 16px', 
           border: 'none', 
+          marginLeft: '8px',
           borderRadius: '4px', 
           cursor: 'pointer' 
         }}
@@ -148,7 +172,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
     </div>
     <ReactFlow
       nodes={modifiedNodes}
-      edges={edges}
+      edges={modifiedEdges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
