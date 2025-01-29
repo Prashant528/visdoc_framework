@@ -99,6 +99,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
     (params) => setEdges((els) => addEdge(params, els)),
     [],
   );
+  
 
   const [modalContent, setModalContent] = useState('');
   const [open, setOpen] = useState(false);
