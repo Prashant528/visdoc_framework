@@ -20,6 +20,7 @@ export default function render_graph(repo_name, graph_sequences){
         for (let j = 0; j < graph_sequences[i]['edges'].length; j++) {
 
             let edge = graph_sequences[i]['edges'][j]
+            let edge_label = edge['edge_label'] ?? "";
             
             // create the nodes
             if(j==0){
@@ -27,7 +28,7 @@ export default function render_graph(repo_name, graph_sequences){
                 nodes.push(new_node)
                 new_node = create_node(y_start_pos, i, 1, edge["target"])
                 nodes.push(new_node)
-                let new_edge = create_edge(repo_name, edge["source"])
+                let new_edge = create_edge(repo_name, edge["source"], edge_label)
                 edges.push(new_edge)
             }
             else{
@@ -36,7 +37,7 @@ export default function render_graph(repo_name, graph_sequences){
             }
 
             //create edges
-            let new_edge = create_edge(edge["source"], edge["target"])
+            let new_edge = create_edge(edge["source"], edge["target"], edge_label)
             edges.push(new_edge)
 
         }
@@ -61,12 +62,24 @@ function create_node(y_start_pos, sequence_idx, edge_idx, node_name){
       })
 }
 
-function create_edge(source, target){
+function create_edge(source, target, edge_label=''){
     return({
         id: source+'_'+target,
         source: source,
         target: target,
-        type: 'bezier',
+        label: edge_label,
+        labelStyle: { 
+            fontSize: 16, 
+            fill: '#fff', 
+            fontWeight: 'bold' 
+        },
+        labelBgStyle: { 
+            fill: '#007bff',  // Blue background
+            fillOpacity: 0.7, 
+            rx: 5, 
+            ry: 5 
+        },
+        labelBgPadding: [5, 3],
         markerEnd: {
             type: MarkerType.ArrowClosed,
             width: 15,

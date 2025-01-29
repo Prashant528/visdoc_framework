@@ -7,9 +7,9 @@ import VidCreatorPage from './VidCreatorPage';
 
 export default function GithubTheme() {
   return (
-    <div className='main-container'>
+    <div className='main-container responsive-layout'>
       <div className='w-light'>
-        <div className='banner'>
+        {/* <div className='banner'>
           <div className='link' />
           <div className='flex-row-faa'>
             <div className='vector' />
@@ -32,7 +32,7 @@ export default function GithubTheme() {
             <div className='rectangle' />
             <div className='rectangle-8' />
           </div>
-        </div>
+        </div> */}
         <div className='background'>
           <div className='flex-row-fa'>
             <span className='slash'>/</span>

@@ -10,7 +10,7 @@ const ResponsePage = () => {
 
   return (
     <div>
-      <h3>Contribution Workflow</h3>
+      {/* <h3>Contribution Workflow</h3> */}
       <GraphApp graph_sequences={graph_sequences} summaries={summaries} />
     </div>
   );

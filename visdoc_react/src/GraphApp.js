@@ -69,13 +69,25 @@ const GraphApp = ({graph_sequences, summaries}) => {
 
   const [activeSequence, setActiveSequence] = useState(null);
   const sequenceButtons = graph_sequences.map((seq, index) => (
-    <button key={index}
-     onClick={() => setActiveSequence(seq.sequence)} 
-     style={{ marginRight: '2px' }}
-     className="sequence-button" >
+    <button
+      key={index}
+      onClick={() => setActiveSequence(seq.sequence)}
+      style={{
+        marginRight: '8px',
+        backgroundColor: activeSequence === seq.sequence ? '#ff7f50' : '#f0f0f0',
+        color: activeSequence === seq.sequence ? '#fff' : '#000',
+        border: activeSequence === seq.sequence ? '2px solid #0056b3' : '1px solid #ccc',
+        borderRadius: '4px',
+        padding: '6px 12px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s, border-color 0.3s',
+      }}
+      className={`sequence-button ${activeSequence === seq.sequence ? 'active' : ''}`}
+    >
       {seq.sequence}
     </button>
   ));
+  
 
   const handleCreateVideosButtonClick = () => {
     navigate('/creator-page', { state: { flow: graph_sequences, summaries: summaries } });
@@ -126,7 +138,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
     });
   
   return (
-    <div style={{ height: 800 }}>
+    <div style={{ height: 600 }}>
     <div 
       style={{ 
         display: 'flex', 
@@ -136,7 +148,7 @@ const GraphApp = ({graph_sequences, summaries}) => {
       }}
     >
       {/* Left side: sequence buttons */}
-      <div class='sequence-buttons-container' >
+      <div className='sequence-buttons-container' >
         {sequenceButtons}
       </div>
 

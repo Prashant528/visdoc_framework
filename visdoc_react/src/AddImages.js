@@ -10,7 +10,7 @@ const AddImages = ({ flow, summaries }) => {
         content.split('<br />').map((subContent) => ({
           text: subContent,
           image: null,
-          isEditing: false, // Track whether the text is being edited
+          isEditing: false,
         })),
       ])
     )
@@ -36,7 +36,7 @@ const AddImages = ({ flow, summaries }) => {
 
     reader.onload = () => {
       const updatedData = { ...data };
-      updatedData[topic][index].image = reader.result; // Save the image as Base64
+      updatedData[topic][index].image = reader.result;
       setData(updatedData);
     };
 
@@ -73,7 +73,6 @@ const AddImages = ({ flow, summaries }) => {
             {subContents.map((subContent, index) => (
               <div key={index} style={{ marginBottom: '1rem' }}>
                 {subContent.isEditing ? (
-                  // Editable mode
                   <textarea
                     value={subContent.text}
                     onChange={(e) => handleTextChange(topic, index, e.target.value)}
@@ -86,32 +85,39 @@ const AddImages = ({ flow, summaries }) => {
                     }}
                   />
                 ) : (
-                  // Markdown display mode
                   <ReactMarkdown>{subContent.text}</ReactMarkdown>
                 )}
+
+                {subContent.image && (
+                  <img
+                    src={subContent.image}
+                    alt={`Uploaded for ${topic} - ${index}`}
+                    style={{ maxWidth: '100%', borderRadius: '4px', marginTop: '0.5rem' }}
+                  />
+                )}
+
                 <button
                   className="common-button"
                   onClick={() => toggleEditMode(topic, index)}
                 >
                   {subContent.isEditing ? 'Save' : 'Edit'}
                 </button>
+
                 <label className="common-button plus-button">
-                <img
+                  <img
                     src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-image'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><path d='M21 15l-5-5L5 21'></path></svg>"
                     alt="icon"
                     width="16"
                     height="16"
-                    style={{ verticalAlign: "middle" }}
+                    style={{ verticalAlign: 'middle' }}
                   />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageUpload(topic, index, e)}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-
-
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(topic, index, e)}
+                    style={{ display: 'none' }}
+                  />
+                </label>
               </div>
             ))}
           </div>
