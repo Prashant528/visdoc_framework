@@ -50,6 +50,9 @@ export default function render_graph(repo_name, graph_sequences) {
         for (let j = 0; j < graph_sequences[i]['edges'].length; j++) {
             let edge = graph_sequences[i]['edges'][j];
             let edge_label = edge['edge_label'] ?? "";
+            edge_label = edge_label.substring(edge_label.lastIndexOf('/') + 1);
+
+
 
             if (!nodes.find(n => n.id === edge["source"])) {
                 nodes.push(create_node(edge["source"]));

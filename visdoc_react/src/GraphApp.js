@@ -36,13 +36,13 @@ function NodeWithToolbar({ data,handleOpenModal }) {
         transition: 'transform 0.2s ease-in-out',
       }}
       className="node-hover"
+      // onClick={openModal}
     >
       <NodeToolbar
         isVisible={data.forceToolbarVisible}
         position={data.toolbarPosition}
       >
         <button onClick={openModal}>Text</button>
-        <button>Images</button>
         <button>Videos</button>
       </NodeToolbar>
       <div className="new_node_label">{data.label}</div>
