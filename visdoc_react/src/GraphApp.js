@@ -12,10 +12,13 @@ import {
 import '@xyflow/react/dist/style.css';
 import { useNavigate } from 'react-router-dom'; 
 
-import render_graph from './graph_generator';
-import Modal from './Modal';
+// We'll modify render_graph or import some helper from it
+import { initialGraphData, reLayoutVisibleElements } from './graph_generator';
 
-const repo_name= 'Flutter';
+import Modal from './Modal';
+import VideoModal from './VideoModal';
+
+const repo_name = 'Flutter';
 
 /**
  * Recursively gather all descendants of a node (children, grandchildren, etc.)
@@ -32,7 +35,7 @@ function gatherDescendants(nodeId, adjacencyList) {
       visited.add(current);
       descendants.push(current);
       if (adjacencyList[current]) {
-        adjacencyList[current].forEach((child) => {
+        adjacencyList[current].forEach(child => {
           if (!visited.has(child)) {
             stack.push(child);
           }
@@ -40,11 +43,10 @@ function gatherDescendants(nodeId, adjacencyList) {
       }
     }
   }
-
   return descendants;
 }
 
-function NodeWithToolbar({ data, handleOpenModal, onExpand, onCollapse }) {
+function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand, onCollapse }) {
   const openModal = () => {
     handleOpenModal(data.label);
   };
@@ -58,7 +60,7 @@ function NodeWithToolbar({ data, handleOpenModal, onExpand, onCollapse }) {
         backgroundColor: '#f0f8ff',
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
         position: 'relative',
-        /* Add a small transition to see movement/fade changes */
+        // Add a small transition to help visualize repositioning
         transition: 'transform 0.3s ease-in-out, opacity 0.3s ease-in-out',
       }}
       className="node-hover"
@@ -69,7 +71,7 @@ function NodeWithToolbar({ data, handleOpenModal, onExpand, onCollapse }) {
         position={data.toolbarPosition}
       >
         <button onClick={openModal}>Text</button>
-        <button>Videos</button>
+        <button onClick={() => handleOpenVideoModal(data.label)}>Video</button>
       </NodeToolbar>
 
       {/* Node Label */}
@@ -81,7 +83,7 @@ function NodeWithToolbar({ data, handleOpenModal, onExpand, onCollapse }) {
           position: 'absolute',
           left: '-1.5rem',
           top: '50%',
-          transform: 'translateY(-50%)',
+          transform: 'translateY(-50%)'
         }}
       >
         <button 
@@ -124,75 +126,74 @@ const nodeTypes = {
 
 const GraphApp = ({ graph_sequences, summaries }) => {
   const navigate = useNavigate();
-  let [initialNodes, initialEdges] = render_graph(repo_name, graph_sequences);
 
-  // 1. Build adjacency list for expand/collapse
-  const adjacencyList = useMemo(() => {
-    const adjacency = {};
-    initialEdges.forEach((edge) => {
-      if (!adjacency[edge.source]) {
-        adjacency[edge.source] = [];
-      }
-      adjacency[edge.source].push(edge.target);
-    });
-    return adjacency;
-  }, [initialEdges]);
+  // 1) Build the entire graph (all nodes/edges), but do NOT do the final Dagre layout yet.
+  //    Instead, we use a custom function that identifies root nodes and sets them + their children to visible.
+  const { initialNodes, initialEdges, adjacencyList } = initialGraphData(
+    repo_name,
+    graph_sequences
+  );
 
-  // 2. Ensure isVisible is set on all nodes
-  initialNodes = initialNodes.map(node => {
-    return {
-      ...node,
-      data: {
-        ...node.data,
-        isVisible: node.data.isVisible !== false
-      }
-    };
-  });
-
+  // 2) Use the standard React Flow hooks
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   // For sequence highlighting
   const [activeSequence, setActiveSequence] = useState(null);
 
-  // 3. Expand/Collapse
-  const handleExpand = useCallback((nodeId) => {
-    // Show only immediate children
-    setNodes((prevNodes) => {
-      return prevNodes.map((node) => {
-        if (adjacencyList[nodeId]?.includes(node.id)) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              isVisible: true
-            }
-          };
-        }
-        return node;
+  // 3) A function to "re-run" the Dagre layout on the currently visible nodes/edges.
+  const runLayout = useCallback((currentNodes, currentEdges) => {
+    const [newNodes, newEdges] = reLayoutVisibleElements(currentNodes, currentEdges);
+    // Return the newly laid out arrays
+    return [newNodes, newEdges];
+  }, []);
+
+  // 4) Expand logic
+  const handleExpand = useCallback(
+    (nodeId) => {
+      // Show immediate children
+      setNodes((prevNodes) => {
+        // First, make immediate children visible
+        const nextNodes = prevNodes.map((node) => {
+          if (adjacencyList[nodeId]?.includes(node.id)) {
+            return {
+              ...node,
+              data: { ...node.data, isVisible: true },
+            };
+          }
+          return node;
+        });
+        // Re-run dagre layout for newly visible nodes
+        const [laidOutNodes, ] = runLayout(nextNodes, edges);
+        return laidOutNodes;
       });
-    });
-  }, [adjacencyList, setNodes]);
+    },
+    [adjacencyList, edges, runLayout, setNodes]
+  );
 
-  const handleCollapse = useCallback((nodeId) => {
-    // Hide the entire subtree under nodeId
-    const descendants = gatherDescendants(nodeId, adjacencyList);
+  // 5) Collapse logic
+  const handleCollapse = useCallback(
+    (nodeId) => {
+      // Hide entire subtree
+      const descendants = gatherDescendants(nodeId, adjacencyList);
 
-    setNodes((prevNodes) =>
-      prevNodes.map((node) => {
-        if (descendants.includes(node.id)) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              isVisible: false
-            }
-          };
-        }
-        return node;
-      })
-    );
-  }, [adjacencyList, setNodes]);
+      setNodes((prevNodes) => {
+        const nextNodes = prevNodes.map((node) => {
+          if (descendants.includes(node.id)) {
+            return { 
+              ...node, 
+              data: { ...node.data, isVisible: false },
+            };
+          }
+          return node;
+        });
+        // Re-run dagre layout after collapsing
+        const [laidOutNodes, ] = runLayout(nextNodes, edges);
+        return laidOutNodes;
+      });
+    },
+    [adjacencyList, edges, runLayout, setNodes]
+  );
 
   // Sequence Buttons
   const sequenceButtons = graph_sequences.map((seq, index) => (
@@ -215,37 +216,36 @@ const GraphApp = ({ graph_sequences, summaries }) => {
     </button>
   ));
 
-  // "Create Videos" and "Edit Texts" Buttons
+  // Create Videos / Edit Texts
   const handleCreateVideosButtonClick = () => {
     navigate('/creator-page', { state: { flow: graph_sequences, summaries: summaries } });
   };
 
-  // onConnect for React Flow
+  // OnConnect for React Flow
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),
     [setEdges]
   );
 
-  // Modal logic
+  // Modal
   const [modalContent, setModalContent] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
+  const handleCloseModal = () => setOpen(false);
   const handleOpenModal = (label) => {
     const summary = summaries[label] || 'No summary available';
     setModalContent(summary);
     setOpen(true);
   };
 
-  // 4. Filter/Style by visibility & sequence highlighting
+  // 6) Filter/Style by visibility & sequence highlighting
   const visibleNodes = nodes.filter((node) => node.data.isVisible);
 
   const modifiedNodes = visibleNodes.map((node) => {
     if (activeSequence) {
-      const sequenceEdges = graph_sequences.find((seq) => seq.sequence === activeSequence).edges;
+      const sequenceEdges = graph_sequences.find(
+        (seq) => seq.sequence === activeSequence
+      )?.edges || [];
       const isActive = sequenceEdges.some(
         (edge) => edge.source === node.id || edge.target === node.id
       );
@@ -257,17 +257,17 @@ const GraphApp = ({ graph_sequences, summaries }) => {
     return node;
   });
 
-  // Show edges only if both source & target are visible
   const visibleEdges = edges.filter((edge) => {
     const sourceNode = nodes.find((n) => n.id === edge.source);
     const targetNode = nodes.find((n) => n.id === edge.target);
     return sourceNode?.data.isVisible && targetNode?.data.isVisible;
   });
 
-  // Apply sequence highlighting to visible edges
   const modifiedEdges = visibleEdges.map((edge) => {
     if (activeSequence) {
-      const sequenceEdges = graph_sequences.find((seq) => seq.sequence === activeSequence).edges;
+      const sequenceEdges = graph_sequences.find(
+        (seq) => seq.sequence === activeSequence
+      )?.edges || [];
       const isActive = sequenceEdges.some(
         (seqEdge) => seqEdge.source === edge.source && seqEdge.target === edge.target
       );
@@ -283,8 +283,22 @@ const GraphApp = ({ graph_sequences, summaries }) => {
     return edge;
   });
 
+  //video modal components
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState('');
+
+  const handleOpenVideoModal = (videoTitle) => {
+    setSelectedVideo(videoTitle);
+    setVideoOpen(true);
+  };
+
+  const handleCloseVideoModal = () => {
+    setVideoOpen(false);
+  };
+
   return (
     <div style={{ height: 600 }}>
+      {/* Top Controls: Sequence + create/edit buttons */}
       <div 
         style={{ 
           display: 'flex', 
@@ -329,6 +343,7 @@ const GraphApp = ({ graph_sequences, summaries }) => {
         </button>
       </div>
 
+      {/* The React Flow Graph */}
       <ReactFlow
         nodes={modifiedNodes}
         edges={modifiedEdges}
@@ -342,6 +357,7 @@ const GraphApp = ({ graph_sequences, summaries }) => {
             <NodeWithToolbar
               {...nodeProps}
               handleOpenModal={handleOpenModal}
+              handleOpenVideoModal={handleOpenVideoModal}
               onExpand={handleExpand}
               onCollapse={handleCollapse}
             />
@@ -351,6 +367,8 @@ const GraphApp = ({ graph_sequences, summaries }) => {
         <Modal isOpen={open} handleCloseModal={handleCloseModal}>
           {modalContent}
         </Modal>
+        <VideoModal isOpen={videoOpen} videoTitle={selectedVideo} handleClose={handleCloseVideoModal} />
+
         <Controls />
       </ReactFlow>
     </div>

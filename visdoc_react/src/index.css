@@ -141,3 +141,27 @@ code {
   font-weight: normal;
   color: #353030;
 }
+
+/* Close Button Styles */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 25px;  /* Set fixed width */
+  height: 25px; /* Set fixed height */
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  color: white;
+  border-radius: 4px; /* Slight rounding for a modern look */
+  border: none;
+}
+
+.close:hover {
+  background: rgba(0, 0, 0, 0.8); /* Darker on hover */
+}
+
