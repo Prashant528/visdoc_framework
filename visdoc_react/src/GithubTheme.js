@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './github_theme.css';
 import { Routes, Route } from 'react-router-dom';
 import MyForm from './MyForm';
@@ -6,6 +6,13 @@ import ResponsePage from './ResponsePage';
 import VidCreatorPage from './VidCreatorPage';
 
 export default function GithubTheme() {
+
+  const [title, setTitle] = useState('GitHub');
+
+  const updateTitle = (newTitle) => {
+    setTitle(newTitle);
+  };
+
   return (
     <div className='main-container responsive-layout'>
       <div className='w-light'>
@@ -35,7 +42,7 @@ export default function GithubTheme() {
         </div> */}
         <div className='background'>
           <div className='flex-row-fa'>
-            <span className='slash'>/</span>
+            {/* <span className='slash'>/</span> */}
             <button className='link-signed-in'>
               <span className='notifications'>Notifications</span>
               <div className='vector-9' />
@@ -54,8 +61,8 @@ export default function GithubTheme() {
               <div className='div-vector' />
               <span className='span-star'> Star </span>
             </button>
-            <span className='span-flutter'>flutter</span>
-            <span className='span-flutter-c'>flutter</span>
+            <span className='span-flutter'>{title}</span>
+            {/* <span className='span-flutter-c'>flutter</span> */}
             <div className='div-vector-d' />
             <span className='span-public'>Public</span>
           </div>
@@ -133,8 +140,8 @@ export default function GithubTheme() {
           </div>
         </div>
         <Routes>
-          <Route path="/" element={<MyForm />} />
-          <Route path="/response-page" element={<ResponsePage />} />
+          <Route path="/" element={<MyForm updateTitle={updateTitle}/>} />
+          <Route path="/response-page" element={<ResponsePage repo={title}/>} />
           <Route path="/creator-page" element={<VidCreatorPage />} />
 
         </Routes>

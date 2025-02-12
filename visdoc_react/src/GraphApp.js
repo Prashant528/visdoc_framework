@@ -124,7 +124,7 @@ const nodeTypes = {
   'node-with-toolbar': NodeWithToolbar,
 };
 
-const GraphApp = ({ graph_sequences, summaries }) => {
+const GraphApp = ({ graph_sequences, summaries , repo}) => {
   const navigate = useNavigate();
 
   // 1) Build the entire graph (all nodes/edges), but do NOT do the final Dagre layout yet.
@@ -367,7 +367,7 @@ const GraphApp = ({ graph_sequences, summaries }) => {
         <Modal isOpen={open} handleCloseModal={handleCloseModal}>
           {modalContent}
         </Modal>
-        <VideoModal isOpen={videoOpen} videoTitle={selectedVideo} handleClose={handleCloseVideoModal} />
+        <VideoModal isOpen={videoOpen} videoTitle={selectedVideo} handleClose={handleCloseVideoModal} repo={repo}/>
 
         <Controls />
       </ReactFlow>
