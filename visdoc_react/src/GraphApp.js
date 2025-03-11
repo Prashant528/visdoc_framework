@@ -344,6 +344,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
       >
         {/* Sequence buttons */}
         <div className='sequence-buttons-container'>
+          <span className="sequence-label">Choose a task:</span>
           {sequenceButtons}
         </div>
 
@@ -379,7 +380,9 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
       </div> 
 
       {/* The React Flow Graph */}
+      <div className="graph-container">
       <ReactFlow
+        style={{ height: '100%' }} 
         nodes={modifiedNodes}
         edges={modifiedEdges}
         onNodesChange={onNodesChange}
@@ -407,7 +410,9 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
         <VideoModal isOpen={videoOpen} videoTitle={selectedVideo} handleClose={handleCloseVideoModal} repo={repo}/>
 
         <Controls />
+
       </ReactFlow>
+      </div>
     </div>
   );
 };

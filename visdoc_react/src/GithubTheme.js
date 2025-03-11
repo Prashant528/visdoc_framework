@@ -15,7 +15,7 @@ export default function GithubTheme() {
 
   return (
     <div className='main-container responsive-layout'>
-      <div className='w-light'>
+      {/* <div className='w-light'> */}
         {/* <div className='banner'>
           <div className='link' />
           <div className='flex-row-faa'>
@@ -143,7 +143,7 @@ export default function GithubTheme() {
           <Route path="/creator-page" element={<VidCreatorPage />} />
 
         </Routes>
-        <div className='flex-row-f'>
+        {/* <div className='flex-row-f'>
           <div className='vector-16' />
           <span className='copyright'>© 2024 GitHub, Inc.</span>
           <span className='terms'>Terms</span>
@@ -156,8 +156,8 @@ export default function GithubTheme() {
           <span className='do-not-share'>
             Do not share my personal information
           </span>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </div>
   );
 }
