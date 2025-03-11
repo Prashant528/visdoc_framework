@@ -137,7 +137,7 @@ const AddImages = ({ flow, summaries }) => {
           cursor: 'pointer',
         }}
       >
-        Generate Videos
+        Submit changes
       </button>
     </div>
   );

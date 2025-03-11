@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './index.css';
 import ReactMarkdown from 'react-markdown';
 
 const Modal = ({ isOpen, handleCloseModal, children }) => {
+
+// Close modal when 'Escape' key is pressed
+useEffect(() => {
+	const handleKeyDown = (event) => {
+		if (event.key === 'Escape') {
+		handleCloseModal();
+		}
+	};
+
+	if (isOpen) {
+		window.addEventListener('keydown', handleKeyDown);
+	}
+
+	return () => {
+		window.removeEventListener('keydown', handleKeyDown);
+	};
+	}, [isOpen, handleCloseModal]);
+
   if (!isOpen) return null;
 
   // Preprocess Markdown content

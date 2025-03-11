@@ -40,9 +40,8 @@ export default function GithubTheme() {
             <div className='rectangle-8' />
           </div>
         </div> */}
-        <div className='background'>
+        {/* <div className='background'>
           <div className='flex-row-fa'>
-            {/* <span className='slash'>/</span> */}
             <button className='link-signed-in'>
               <span className='notifications'>Notifications</span>
               <div className='vector-9' />
@@ -62,7 +61,6 @@ export default function GithubTheme() {
               <span className='span-star'> Star </span>
             </button>
             <span className='span-flutter'>{title}</span>
-            {/* <span className='span-flutter-c'>flutter</span> */}
             <div className='div-vector-d' />
             <span className='span-public'>Public</span>
           </div>
@@ -138,7 +136,7 @@ export default function GithubTheme() {
 
             </div>
           </div>
-        </div>
+        </div> */}
         <Routes>
           <Route path="/" element={<MyForm updateTitle={updateTitle}/>} />
           <Route path="/response-page" element={<ResponsePage repo={title}/>} />

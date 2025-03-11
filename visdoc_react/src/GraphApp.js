@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -46,10 +46,45 @@ function gatherDescendants(nodeId, adjacencyList) {
   return descendants;
 }
 
-function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand, onCollapse }) {
+const checkVideoExists = async (videoTitle, repo) => {
+  try {
+    const response = await fetch(`/assets/videos/${repo}/${videoTitle}.mp4`, { method: 'HEAD' });
+
+    if (!response.ok) {
+      console.log(`Video ${videoTitle}.mp4 not found for repo ${repo}. Response:`, response.status);
+      return false;
+    }
+
+    // Extra safety: Ensure correct Content-Type is returned
+    const contentType = response.headers.get('Content-Type');
+    if (!contentType || !contentType.includes('video')) {
+      console.log(`Invalid content type for ${videoTitle}: ${contentType}`);
+      return false;
+    }
+
+    console.log(`Video ${videoTitle}.mp4 found for repo ${repo}`);
+    return true;
+  } catch (error) {
+    console.error(`Error checking video for ${videoTitle}:`, error);
+    return false;
+  }
+};
+
+function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand, onCollapse, repo, adjacencyList }) {
   const openModal = () => {
     handleOpenModal(data.label);
   };
+  const hasChildren = adjacencyList[data.label] && adjacencyList[data.label].length > 0;
+
+  const [videoExists, setVideoExists] = useState(false);
+
+  useEffect(() => {
+    const fetchVideoStatus = async () => {
+      const exists = await checkVideoExists(data.label, repo);
+      setVideoExists(exists);
+    };
+    fetchVideoStatus();
+  }, [data.label, repo]);
 
   return (
     <div
@@ -66,12 +101,9 @@ function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand
       className="node-hover"
     >
       {/* Node Toolbar (Text / Videos) */}
-      <NodeToolbar
-        isVisible={data.forceToolbarVisible}
-        position={data.toolbarPosition}
-      >
-        <button onClick={openModal}>Text</button>
-        <button onClick={() => handleOpenVideoModal(data.label)}>Video</button>
+      <NodeToolbar isVisible={data.forceToolbarVisible} position={data.toolbarPosition}>
+        <button onClick={() => handleOpenModal(data.label)}>Text</button>
+        {videoExists && <button onClick={() => handleOpenVideoModal(data.label)}>Video</button>}
       </NodeToolbar>
 
       {/* Node Label */}
@@ -96,22 +128,25 @@ function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand
       </div>
 
       {/* Expand Button (on the right side) */}
-      <div
-        style={{
-          position: 'absolute',
-          right: '-1.5rem',
-          top: '50%',
-          transform: 'translateY(-50%)'
-        }}
-      >
-        <button 
-          onClick={() => onExpand(data.label)} 
-          style={{ cursor: 'pointer' }}
-          aria-label="expand children"
+      {/* Expand Button (Only if children exist) */}
+      {hasChildren && (
+        <div
+          style={{
+            position: 'absolute',
+            right: '-1.5rem',
+            top: '50%',
+            transform: 'translateY(-50%)'
+          }}
         >
-          ❯
-        </button>
-      </div>
+          <button 
+            onClick={() => onExpand(data.label)} 
+            style={{ cursor: 'pointer' }}
+            aria-label="expand children"
+          >
+            ❯
+          </button>
+        </div>
+      )}
 
       {/* React Flow Handles */}
       <Handle type="target" position={Position.Left} />
@@ -313,7 +348,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
         </div>
 
         {/* Create Videos Button */}
-        <button 
+        {/* <button 
           onClick={handleCreateVideosButtonClick} 
           style={{ 
             backgroundColor: '#007bff', 
@@ -326,13 +361,13 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           }}
         >
           Create Videos
-        </button>
-        <button 
+        </button> */}
+        {/* <button 
           onClick={handleCreateVideosButtonClick} 
           style={{ 
             backgroundColor: '#007bff', 
             color: '#fff', 
-            padding: '8px 16px', 
+            padding: '8px 8px', 
             border: 'none', 
             borderRadius: '4px', 
             cursor: 'pointer', 
@@ -340,8 +375,8 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           }}
         >
           Edit Texts
-        </button>
-      </div>
+        </button>*/}
+      </div> 
 
       {/* The React Flow Graph */}
       <ReactFlow
@@ -360,6 +395,8 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
               handleOpenVideoModal={handleOpenVideoModal}
               onExpand={handleExpand}
               onCollapse={handleCollapse}
+              repo={repo}
+              adjacencyList={adjacencyList}
             />
           ),
         }}

@@ -6,7 +6,9 @@
 .pnp.js
 
 #videos
-/public/assets/videos
+/public/assets/videos/flutter
+/public/assets/videos/node
+/public/assets/videos/
 
 # testing
 /coverage

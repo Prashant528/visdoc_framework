@@ -36,11 +36,11 @@ const MyForm = ({updateTitle}) => {
           }
         }
 
-      else if (values.repo_link.includes("node")) {
+      else if (values.repo_link.includes("transformers")) {
         console.log("Node repo detected. Performing task...");
 
         try {
-          const response = await fetch('http://127.0.0.1:8080/node_cached', {
+          const response = await fetch('http://127.0.0.1:8080/transformers_cached', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

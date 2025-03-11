@@ -17,6 +17,7 @@ function getLayoutedElements(nodes, edges, direction = 'LR') {
     rankdir: direction,
     ranksep: 400,
     nodesep: 200,
+    ranker: "network-simplex"
   });
 
   nodes.forEach((node) => {
