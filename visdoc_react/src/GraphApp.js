@@ -442,11 +442,25 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     }
   };
   
-  
+  const handleClearGraph = () => {
+    setNodes(initialNodes);   // Reset nodes to initial state
+    setEdges(initialEdges);   // Reset edges to initial state
+    setActiveSequence(null);  // Reset dropdown selection
+    // Run Dagre layout to reset node positions
+    const [resetNodes, resetEdges] = reLayoutVisibleElements(initialNodes, initialEdges);
+    setNodes(resetNodes);
+    setEdges(resetEdges);
+
+    // Find the first node and center the view on it
+    if (resetNodes.length > 0) {
+      const firstNode = resetNodes[0];  // Assuming the first node is the entry point
+      setCenter(firstNode.position.x, firstNode.position.y, { zoom: 0.5 });
+    }
+  };
   
 
   return (
-    <div style={{ height: 600 }}>
+    <div style={{ height: 200 }}>
       {/* Top Controls: Sequence + create/edit buttons */}
       <div 
        style={{ 
@@ -476,11 +490,25 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           style={{ width: 250 }}
           placeholder="Select a sequence"
           onChange={(value) => {
+            if (value === "None") {
+              // Reset the graph to its initial state
+              setActiveSequence(null);
+              setNodes(initialNodes);
+              setEdges(initialEdges);
+              return;
+            }
+        
+            // Otherwise, set the active sequence and center the first node
             setActiveSequence(value);
             centerFirstNodeOfSequence(value);
           }}
           value={activeSequence}
         >
+          {/* Add the "None" option to revert the graph */}
+          <Select.Option key="none" value="None">
+            None
+          </Select.Option>
+          
           {graph_sequences.map((seq, index) => (
             <Select.Option key={index} value={seq.sequence}>
               {seq.sequence}
@@ -495,9 +523,24 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           nodes={nodes} 
           summaries={summaries} 
           onSearchResults={handleSearchResults} 
-          onCenterNode={handleCenterNode}/>
+          onCenterNode={handleCenterNode}
+          clearSearch={handleClearGraph}/>
 
-
+          
+        <button 
+            onClick={handleClearGraph}
+            style={{
+              padding: '8px 12px',
+              border: '1px solid #ccc',
+              backgroundColor: '#ff4d4f', /* Red color for emphasis */
+              color: 'white',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '16px'
+            }}
+          >
+            Clear
+          </button>
         {/* Create Videos Button */}
         {/* <button 
           onClick={handleCreateVideosButtonClick} 

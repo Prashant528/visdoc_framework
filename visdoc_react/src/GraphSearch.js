@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode }) => {
+const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSearch }) => {
   const [query, setQuery] = useState('');
   const [tempQuery, setTempQuery] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,6 +39,14 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode }) => {
       handleSearch();
     }
   };
+
+  // Clear search input when clearSearch is called
+//   useEffect(() => {
+//     if (clearSearch) {
+//       setQuery('');
+//       setTempQuery('');
+//     }
+//   }, [clearSearch]);
 
   return (
     <div style={{ 
