@@ -7,7 +7,8 @@ import {
   Controls,
   NodeToolbar,
   Handle,
-  Position
+  Position,
+  useReactFlow
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useNavigate } from 'react-router-dom'; 
@@ -163,6 +164,8 @@ const nodeTypes = {
 
 const GraphApp = ({ graph_sequences, summaries , repo}) => {
   const navigate = useNavigate();
+  const { setCenter } = useReactFlow();
+
 
   // 1) Build the entire graph (all nodes/edges), but do NOT do the final Dagre layout yet.
   //    Instead, we use a custom function that identifies root nodes and sets them + their children to visible.
@@ -187,6 +190,8 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     // Return the newly laid out arrays
     return [newNodes, newEdges];
   }, []);
+
+  
 
   // 4) Expand logic
   const handleExpand = useCallback(
@@ -282,7 +287,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
   const visibleNodes = nodes.filter((node) => node.data.isVisible);
 
   const modifiedNodes = visibleNodes.map((node) => {
-    let isActive = false;
+    let isActive =  node.data.isActiveSearchResult;
   
     // Maintain sequence-based highlighting
     if (activeSequence) {
@@ -298,10 +303,11 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     // If the node is searched, apply `highlighted-node`
     const highlightClass = node.data.isHighlighted ? 'highlighted-node' : '';
     const sequenceClass = isActive ? 'sequence-highlighted' : '';
-  
+    const activeClass = node.data.isActiveSearchResult ? 'active-search-result' : '';
+
     return {
       ...node,
-      className: `${highlightClass} ${sequenceClass}`.trim(), // Ensure both classes apply properly
+      className: `${highlightClass} ${sequenceClass} ${activeClass}`.trim(), // Ensure both classes apply properly
     };
   });
   
@@ -354,7 +360,8 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           data: { 
             ...node.data, 
             isVisible: node.data.isVisible || isSearched, // Ensure visibility
-            isHighlighted: isSearched  // Ensure highlighting
+            isHighlighted: isSearched,  // Ensure highlighting
+            isActiveSearchResult: false,
           } 
         };
       });
@@ -385,6 +392,31 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     });
   };
   
+  const handleCenterNode = (position, nodeId) => {
+    if (position) {
+      setCenter(position.x, position.y, { zoom: 0.5 });
+    }
+    
+    console.log("Centered node:", nodeId)
+    setNodes((prevNodes) => {
+      return prevNodes.map((node) => {
+        const isActive = node.id === nodeId;
+        return {
+          ...node,
+          className: isActive ? 'active-search-result' : '',
+          data: { 
+            ...node.data, 
+            isActiveSearchResult: isActive,
+          },
+        };
+      });
+    });
+  
+    // Force a small delay to trigger ReactFlow re-render
+    setTimeout(() => setNodes((prevNodes) => [...prevNodes]), 10);
+  };
+  
+  
   
   
   
@@ -406,7 +438,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           {sequenceButtons}
         </div>
 
-        <GraphSearch nodes={nodes} summaries={summaries} onSearchResults={handleSearchResults} />
+        <GraphSearch nodes={nodes} summaries={summaries} onSearchResults={handleSearchResults} onCenterNode={handleCenterNode}/>
 
 
         {/* Create Videos Button */}

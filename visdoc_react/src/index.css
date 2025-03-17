@@ -180,6 +180,15 @@ code {
   color: #353030;
 }
 
+.active-search-result {
+  transform: scale(1.5); /* Increase node size */
+  background-color: #e1ff00 !important; /* Bright Red-Orange */
+  border: 6px solid #bbc625 !important; /* Thick dark red border */
+  box-shadow: 0px 0px 25px rgb(255, 242, 0); /* Glowing effect */
+  font-size: 20px !important; /* Make text larger */
+  transition: transform 0.1s ease-in-out, border 0.1s ease-in-out;
+}
+
 /* Close Button Styles */
 .close {
   position: absolute;
