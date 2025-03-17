@@ -17,6 +17,7 @@ import { initialGraphData, reLayoutVisibleElements } from './graph_generator';
 
 import Modal from './Modal';
 import VideoModal from './VideoModal';
+import GraphSearch from './GraphSearch';
 
 const repo_name = 'Flutter';
 
@@ -45,6 +46,7 @@ function gatherDescendants(nodeId, adjacencyList) {
   }
   return descendants;
 }
+
 
 const checkVideoExists = async (videoTitle, repo) => {
   try {
@@ -172,6 +174,9 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
   // 2) Use the standard React Flow hooks
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  // Searching nodes and filtering them 
+  const [filteredNodes, setFilteredNodes] = useState(nodes);
+
 
   // For sequence highlighting
   const [activeSequence, setActiveSequence] = useState(null);
@@ -277,20 +282,29 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
   const visibleNodes = nodes.filter((node) => node.data.isVisible);
 
   const modifiedNodes = visibleNodes.map((node) => {
+    let isActive = false;
+  
+    // Maintain sequence-based highlighting
     if (activeSequence) {
       const sequenceEdges = graph_sequences.find(
         (seq) => seq.sequence === activeSequence
       )?.edges || [];
-      const isActive = sequenceEdges.some(
+  
+      isActive = sequenceEdges.some(
         (edge) => edge.source === node.id || edge.target === node.id
       );
-      return {
-        ...node,
-        className: isActive ? 'highlighted-node' : '',
-      };
     }
-    return node;
+  
+    // If the node is searched, apply `highlighted-node`
+    const highlightClass = node.data.isHighlighted ? 'highlighted-node' : '';
+    const sequenceClass = isActive ? 'sequence-highlighted' : '';
+  
+    return {
+      ...node,
+      className: `${highlightClass} ${sequenceClass}`.trim(), // Ensure both classes apply properly
+    };
   });
+  
 
   const visibleEdges = edges.filter((edge) => {
     const sourceNode = nodes.find((n) => n.id === edge.source);
@@ -331,6 +345,50 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     setVideoOpen(false);
   };
 
+  const handleSearchResults = (matchingNodes, searchTerm) => {
+    setNodes((prevNodes) => {
+      const updatedNodes = prevNodes.map((node) => {
+        const isSearched = matchingNodes && matchingNodes.some(fNode => fNode.id === node.id);
+        return { 
+          ...node, 
+          data: { 
+            ...node.data, 
+            isVisible: node.data.isVisible || isSearched, // Ensure visibility
+            isHighlighted: isSearched  // Ensure highlighting
+          } 
+        };
+      });
+  
+      // Expand all parents of searched nodes
+      if (matchingNodes) {
+        const visitedNodes = new Set();
+        
+        function expandParents(childId) {
+          if (visitedNodes.has(childId)) return; // Prevent infinite loops
+          visitedNodes.add(childId);
+  
+          Object.entries(adjacencyList).forEach(([parent, children]) => {
+            if (children.includes(childId)) {
+              const parentNode = updatedNodes.find(n => n.id === parent);
+              if (parentNode && !parentNode.data.isVisible) {
+                parentNode.data.isVisible = true;
+                expandParents(parent); // Recursively expand all ancestors
+              }
+            }
+          });
+        }
+  
+        matchingNodes.forEach(node => expandParents(node.id));
+      }
+  
+      return [...updatedNodes]; // 🔥 Force React to detect the state change
+    });
+  };
+  
+  
+  
+  
+
   return (
     <div style={{ height: 600 }}>
       {/* Top Controls: Sequence + create/edit buttons */}
@@ -347,6 +405,9 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           <span className="sequence-label">Choose a task:</span>
           {sequenceButtons}
         </div>
+
+        <GraphSearch nodes={nodes} summaries={summaries} onSearchResults={handleSearchResults} />
+
 
         {/* Create Videos Button */}
         {/* <button 
