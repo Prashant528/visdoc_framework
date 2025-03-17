@@ -19,6 +19,8 @@ import { initialGraphData, reLayoutVisibleElements } from './graph_generator';
 import Modal from './Modal';
 import VideoModal from './VideoModal';
 import GraphSearch from './GraphSearch';
+import { Select } from 'antd';
+
 
 const repo_name = 'Flutter';
 
@@ -416,7 +418,29 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     setTimeout(() => setNodes((prevNodes) => [...prevNodes]), 10);
   };
   
+  const centerFirstNodeOfSequence = (sequenceName) => {
+    const selectedSequence = graph_sequences.find(seq => seq.sequence === sequenceName);
+    if (selectedSequence && selectedSequence.edges.length > 0) {
+      const firstNodeId = selectedSequence.edges[0].target;
+      const firstNode = nodes.find(node => node.id === firstNodeId);
   
+      if (firstNode && firstNode.position) {
+        setCenter(firstNode.position.x, firstNode.position.y, { zoom: 0.5 });
+  
+        // Highlight the first node
+        setNodes(prevNodes =>
+          prevNodes.map(node => ({
+            ...node,
+            className: node.id === firstNodeId ? 'active-search-result' : '',
+            data: {
+              ...node.data,
+              isActiveSearchResult: node.id === firstNodeId,
+            },
+          }))
+        );
+      }
+    }
+  };
   
   
   
@@ -425,20 +449,53 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     <div style={{ height: 600 }}>
       {/* Top Controls: Sequence + create/edit buttons */}
       <div 
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-start', 
-          alignItems: 'center', 
-          width: '100%' 
-        }}
+       style={{ 
+        display: 'flex', 
+        justifyContent: 'center',  // Centering the items
+        alignItems: 'center', 
+        gap: '100px',  // Adjust spacing between dropdown and search
+        width: '100%',
+        marginBottom: '0px'
+      }}
       >
         {/* Sequence buttons */}
-        <div className='sequence-buttons-container'>
-          <span className="sequence-label">Choose a task:</span>
-          {sequenceButtons}
-        </div>
+        <div 
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '5px',
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          backgroundColor: '#f8f9fa',
+          width: '30%'  // Same width as the search box
+        }}
+      >
+        <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '10px' }}>Choose a task:</span>
+        <Select
+          style={{ width: 250 }}
+          placeholder="Select a sequence"
+          onChange={(value) => {
+            setActiveSequence(value);
+            centerFirstNodeOfSequence(value);
+          }}
+          value={activeSequence}
+        >
+          {graph_sequences.map((seq, index) => (
+            <Select.Option key={index} value={seq.sequence}>
+              {seq.sequence}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
 
-        <GraphSearch nodes={nodes} summaries={summaries} onSearchResults={handleSearchResults} onCenterNode={handleCenterNode}/>
+
+        <GraphSearch 
+          style={{ width: 300 }}
+          nodes={nodes} 
+          summaries={summaries} 
+          onSearchResults={handleSearchResults} 
+          onCenterNode={handleCenterNode}/>
 
 
         {/* Create Videos Button */}

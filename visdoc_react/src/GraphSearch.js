@@ -46,6 +46,7 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode }) => {
         alignItems: 'center', 
         justifyContent: 'center', 
         marginBottom: '10px', 
+        marginTop:'10px',
         padding: '5px', 
         border: '1px solid #ccc', 
         borderRadius: '8px', 
@@ -54,7 +55,7 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode }) => {
       }}>
         <input
           type="text"
-          placeholder="Search nodes..."
+          placeholder="Search nodes/content..."
           value={tempQuery}
           onChange={(e) => setTempQuery(e.target.value)}
           onKeyPress={handleKeyPress}
