@@ -54,7 +54,7 @@ function gatherDescendants(nodeId, adjacencyList) {
 const checkVideoExists = async (videoTitle, repo) => {
   try {
     const response = await fetch(`/assets/videos/${repo}/${videoTitle}.mp4`, { method: 'HEAD' });
-
+    console.log(response)
     if (!response.ok) {
       console.log(`Video ${videoTitle}.mp4 not found for repo ${repo}. Response:`, response.status);
       return false;
@@ -113,45 +113,75 @@ function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand
 
       {/* Node Label */}
       <div className="new_node_label">{data.label}</div>
-
-      {/* Collapse Button (on the left side) */}
-      <div
+      
+      {/* Button Container Below the Node */}
+    <div
+      style={{
+        position: 'absolute',
+        bottom: '-2rem', // Moves buttons below the node
+        left: '25%', // Centers them horizontally
+        width: '50%', // Half of the node width
+        display: 'flex', // Align buttons in a row
+        justifyContent: 'space-between', // Space out buttons evenly
+      }}
+    >
+      {/* Collapse Button */}
+      <button
+        onClick={() => onCollapse(data.label)}
         style={{
-          position: 'absolute',
-          left: '-1.5rem',
-          top: '50%',
-          transform: 'translateY(-50%)'
+          cursor: 'pointer',
+          width: '50%', // Each button takes almost half of the container
+          backgroundColor: '#f0f7fc',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          padding: '4px',
+          textAlign: 'center',
         }}
+        aria-label="collapse children"
       >
-        <button 
-          onClick={() => onCollapse(data.label)} 
-          style={{ cursor: 'pointer' }}
-          aria-label="collapse children"
-        >
-          ❮
-        </button>
-      </div>
+        ❮
+      </button>
 
-      {/* Expand Button (on the right side) */}
       {/* Expand Button (Only if children exist) */}
       {hasChildren && (
-        <div
+        <button
+          onClick={() => onExpand(data.label)}
           style={{
-            position: 'absolute',
-            right: '-1.5rem',
-            top: '50%',
-            transform: 'translateY(-50%)'
+            cursor: 'pointer',
+            width: '50%', // Each button takes almost half of the container
+            backgroundColor: '#f0f7fc',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            padding: '4px',
+            textAlign: 'center',
           }}
+          aria-label="expand children"
         >
-          <button 
-            onClick={() => onExpand(data.label)} 
-            style={{ cursor: 'pointer' }}
-            aria-label="expand children"
-          >
-            ❯
-          </button>
-        </div>
+          ❯
+        </button>
       )}
+    </div>
+
+    {/* Depth Box (Small Box in Front of Node) */}
+    <div
+      style={{
+        position: 'absolute',
+        left: '-1.5rem', // Position the box to the left of the node
+        top: '20%', // Center it vertically
+        transform: 'translateY(-50%)',
+        backgroundColor: '#f0f7fc', // Background color
+        color: 'black', // Text color
+        padding: '1px 1px', // Padding for better visibility
+        borderRadius: '4px', // Rounded corners
+        fontSize: '12px',
+        textAlign: 'center',
+        minWidth: '10px', // Ensures small but readable size
+      }}
+    >
+      {data.depth}
+    </div>
+
+     
 
       {/* React Flow Handles */}
       <Handle type="target" position={Position.Left} />
@@ -482,13 +512,13 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           border: '1px solid #ccc',
           borderRadius: '8px',
           backgroundColor: '#f8f9fa',
-          width: '30%'  // Same width as the search box
+          width: '40%'  // Same width as the search box
         }}
       >
-        <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '10px' }}>Choose a task:</span>
+        <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '10px' }}>Choose a category:</span>
         <Select
           style={{ width: 250 }}
-          placeholder="Select a sequence"
+          placeholder="Select a category"
           onChange={(value) => {
             if (value === "None") {
               // Reset the graph to its initial state

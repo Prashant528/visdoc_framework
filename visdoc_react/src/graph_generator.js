@@ -1,5 +1,7 @@
 import { MarkerType } from '@xyflow/react';
 import dagre from 'dagre';
+import calculateNodeDepth from './utils'
+
 
 /** Use these constants as you wish */
 const edge_color = '#007FFF';
@@ -97,6 +99,8 @@ export function initialGraphData(repo_name, graph_sequences) {
     .map(n => n.id)
     .filter(id => !incomingEdges[id]); // no incoming edges => root
 
+  const depthMap = calculateNodeDepth(adjacencyList);
+
   // Mark root nodes as visible, and also their immediate children
   const newNodes = nodes.map(node => {
     if (rootNodeIds.includes(node.id)) {
@@ -104,7 +108,8 @@ export function initialGraphData(repo_name, graph_sequences) {
         ...node,
         data: {
           ...node.data,
-          isVisible: true
+          isVisible: true,
+          depth: depthMap[node.id] || 1,
         }
       };
     } 
@@ -115,7 +120,8 @@ export function initialGraphData(repo_name, graph_sequences) {
           ...node,
           data: {
             ...node.data,
-            isVisible: true
+            isVisible: true,
+            depth: depthMap[node.id] || 1,
           }
         };
       }
@@ -125,7 +131,8 @@ export function initialGraphData(repo_name, graph_sequences) {
       ...node,
       data: {
         ...node.data,
-        isVisible: false
+        isVisible: false,
+        depth: depthMap[node.id] || 1,
       }
     };
   });
@@ -208,8 +215,8 @@ function create_edge(source, target, edge_label = '') {
     labelBgPadding: [5, 3],
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      width: 15,
-      height: 25,
+      width: 20,
+      height: 15,
       color: edge_color,
     },
     style: { strokeWidth: 3, stroke: edge_color },
