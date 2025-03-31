@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import './index.css';
 
 const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSearch }) => {
   const [query, setQuery] = useState('');
   const [tempQuery, setTempQuery] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleSearch = () => {
     const searchTerm = tempQuery.toLowerCase();
     setQuery(searchTerm);
+    setShowTooltip(false); // Reset tooltip on each search
   
     if (!searchTerm) {
       onSearchResults(null, null);
@@ -24,14 +27,19 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
   
     onSearchResults(matchingNodes, searchTerm);
   
+    if (matchingNodes.length === 0) {
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 3000); // Hide after 3 seconds
+        return;
+      }
+  
     if (matchingNodes.length > 0) {
       const nextIndex = currentIndex % matchingNodes.length;
       setCurrentIndex(nextIndex + 1);
-      
-      // Center and highlight only the active node
       onCenterNode(matchingNodes[nextIndex].position, matchingNodes[nextIndex].id);
     }
   };
+  
   
 
   const handleKeyPress = (e) => {
@@ -60,7 +68,7 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
         borderRadius: '8px', 
         backgroundColor: '#f8f9fa', 
         width: '30%' 
-      }}>
+      }} className="search-container">
         <input
           type="text"
           placeholder="Search nodes/content..."
@@ -73,7 +81,7 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
             border: '1px solid #ccc',
             borderRadius: '4px',
             fontSize: '16px',
-          }}
+          }} className="button-container"
         />
         <button 
           onClick={handleSearch} 
@@ -87,10 +95,15 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
             cursor: 'pointer',
             fontSize: '16px',
             marginRight: '5px',
-          }}
+          }} className="search-button"
         >
           <FaSearch size={20} />
         </button>
+        {showTooltip && (
+          <div className="search-tooltip">
+            No results found
+          </div>
+        )}
       </div>
   );
 };

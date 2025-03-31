@@ -212,3 +212,16 @@ code {
 .close:hover {
   background: rgba(0, 0, 0, 0.8); /* Darker on hover */
 }
+
+.search-tooltip {
+  margin-top: 5px;
+  background-color: #333;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.9;
+  z-index: 1000;
+  text-align: center;
+}
