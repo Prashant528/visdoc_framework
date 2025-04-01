@@ -1,74 +1,118 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import './index.css';
 
-const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSearch }) => {
-  const [query, setQuery] = useState('');
+const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, expandNodeAndRevealPath }) => {
   const [tempQuery, setTempQuery] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [results, setResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const graphContainer = document.querySelector('.react-flow');
+      const clickedInsideGraph = graphContainer?.contains(event.target);
+
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target) &&
+        !clickedInsideGraph
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEsc);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
 
   const handleSearch = () => {
-    const searchTerm = tempQuery.toLowerCase();
-    setQuery(searchTerm);
-    setShowTooltip(false); // Reset tooltip on each search
-  
-    if (!searchTerm) {
-      onSearchResults(null, null);
-      setCurrentIndex(0);
+    const search = tempQuery.trim().toLowerCase();
+    if (!search) {
+      setResults([]);
+      setDropdownOpen(false);
       return;
     }
-  
-    const matchingNodes = nodes.filter((node) => {
-      const nodeName = node.id.toLowerCase();
-      const summaryText = summaries[node.id]?.toLowerCase() || '';
-      return nodeName.includes(searchTerm) || summaryText.includes(searchTerm);
-    });
-  
-    onSearchResults(matchingNodes, searchTerm);
-  
-    if (matchingNodes.length === 0) {
-        setShowTooltip(true);
-        setTimeout(() => setShowTooltip(false), 3000); // Hide after 3 seconds
-        return;
+
+    const matched = nodes.map((node) => {
+      const nodeId = node.id;
+      const title = nodeId;
+      const content = summaries[nodeId] || '';
+      const lowerTitle = title.toLowerCase();
+      const lowerContent = content.toLowerCase();
+
+      if (lowerTitle.includes(search)) {
+        return { id: nodeId, type: 'title', title };
+      } else if (lowerContent.includes(search)) {
+        const start = lowerContent.indexOf(search);
+        const snippet = content.substring(
+          Math.max(0, start - 20),
+          Math.min(content.length, start + search.length + 40)
+        );
+        return { id: nodeId, type: 'content', title, snippet, search };
       }
-  
-    if (matchingNodes.length > 0) {
-      const nextIndex = currentIndex % matchingNodes.length;
-      setCurrentIndex(nextIndex + 1);
-      onCenterNode(matchingNodes[nextIndex].position, matchingNodes[nextIndex].id);
-    }
+      return null;
+    }).filter(Boolean);
+
+    setSearchTerm(search);
+    setResults(matched);
+    setDropdownOpen(true);
   };
-  
-  
+
+  const handleSelect = (id) => {
+    const node = nodes.find(n => n.id === id);
+    if (node && node.position) {
+      if (expandNodeAndRevealPath) {
+        expandNodeAndRevealPath(id); // expands all ancestors and their children
+      }
+      onCenterNode(node.position, node.id);
+      onSearchResults([node], searchTerm);
+    }
+    setDropdownOpen(false);
+  };
+
+  const highlightMatch = (text, keyword) => {
+    const regex = new RegExp(`(${keyword})`, 'ig');
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+      regex.test(part) ? (
+        <strong key={i} style={{ backgroundColor: 'yellow' }}>{part}</strong>
+      ) : (
+        part
+      )
+    );
+  };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+    if (e.key === 'Enter') handleSearch();
   };
 
-  // Clear search input when clearSearch is called
-//   useEffect(() => {
-//     if (clearSearch) {
-//       setQuery('');
-//       setTempQuery('');
-//     }
-//   }, [clearSearch]);
-
   return (
-    <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        marginBottom: '10px', 
-        marginTop:'10px',
-        padding: '5px', 
-        border: '1px solid #ccc', 
-        borderRadius: '8px', 
-        backgroundColor: '#f8f9fa', 
-        width: '30%' 
-      }} className="search-container">
+    <div style={{ position: 'relative', width: '30%' }} ref={containerRef}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '5px',
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          backgroundColor: '#f8f9fa',
+          marginTop: '5px',
+          marginBottom: '5px'
+        }}
+      >
         <input
           type="text"
           placeholder="Search nodes/content..."
@@ -80,11 +124,11 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
             width: '100%',
             border: '1px solid #ccc',
             borderRadius: '4px',
-            fontSize: '16px',
-          }} className="button-container"
+            fontSize: '16px'
+          }}
         />
-        <button 
-          onClick={handleSearch} 
+        <button
+          onClick={handleSearch}
           style={{
             marginLeft: '10px',
             padding: '2px 2px',
@@ -92,19 +136,48 @@ const GraphSearch = ({ nodes, summaries, onSearchResults, onCenterNode, clearSea
             backgroundColor: '#007bff',
             color: 'white',
             borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            marginRight: '5px',
-          }} className="search-button"
+            cursor: 'pointer'
+          }}
         >
           <FaSearch size={20} />
         </button>
-        {showTooltip && (
-          <div className="search-tooltip">
-            No results found
-          </div>
-        )}
       </div>
+
+      {dropdownOpen && results.length > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          width: '100%',
+          backgroundColor: 'white',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+          zIndex: 10,
+          maxHeight: '200px',
+          overflowY: 'auto'
+        }}>
+          {results.map((result, index) => (
+            <div
+              key={index}
+              onClick={() => handleSelect(result.id)}
+              style={{
+                padding: '10px',
+                borderBottom: '1px solid #eee',
+                cursor: 'pointer'
+              }}
+            >
+              <strong>{highlightMatch(result.title, searchTerm)}</strong>
+              {result.type === 'content' && (
+                <div style={{ fontSize: '12px', color: '#555', marginTop: '4px' }}>
+                  {highlightMatch(result.snippet, searchTerm)}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

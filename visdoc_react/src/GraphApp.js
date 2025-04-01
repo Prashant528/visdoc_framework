@@ -275,6 +275,41 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
     [adjacencyList, edges, runLayout, setNodes]
   );
 
+  const expandNodeAndRevealPath = (targetId) => {
+    setNodes(prevNodes => {
+      const updatedNodes = [...prevNodes];
+      const visited = new Set();
+  
+      const expandParents = (childId) => {
+        if (visited.has(childId)) return;
+        visited.add(childId);
+  
+        // Loop through all parents
+        Object.entries(adjacencyList).forEach(([parent, children]) => {
+          if (children.includes(childId)) {
+            // Make the parent and all its children visible
+            const parentNode = updatedNodes.find(n => n.id === parent);
+            if (parentNode && !parentNode.data.isVisible) {
+              parentNode.data.isVisible = true;
+            }
+  
+            (adjacencyList[parent] || []).forEach(child => {
+              const childNode = updatedNodes.find(n => n.id === child);
+              if (childNode) {
+                childNode.data.isVisible = true;
+              }
+            });
+  
+            expandParents(parent); // Recurse upward
+          }
+        });
+      };
+  
+      expandParents(targetId);
+      return [...updatedNodes];
+    });
+  };
+
   // Sequence Buttons
   const sequenceButtons = graph_sequences.map((seq, index) => (
     <button
@@ -571,6 +606,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           summaries={summaries} 
           onSearchResults={handleSearchResults} 
           onCenterNode={handleCenterNode}
+          expandNodeAndRevealPath={expandNodeAndRevealPath}
           clearSearch={handleClearGraph}/>
 
           
