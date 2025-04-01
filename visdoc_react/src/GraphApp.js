@@ -20,6 +20,7 @@ import Modal from './Modal';
 import VideoModal from './VideoModal';
 import GraphSearch from './GraphSearch';
 import { Select } from 'antd';
+import { countHiddenDescendants } from './utils';
 
 
 const repo_name = 'Flutter';
@@ -163,23 +164,25 @@ function NodeWithToolbar({ data, handleOpenModal, handleOpenVideoModal, onExpand
     </div>
 
     {/* Depth Box (Small Box in Front of Node) */}
-    <div
-      style={{
-        position: 'absolute',
-        left: '-1.5rem', // Position the box to the left of the node
-        top: '20%', // Center it vertically
-        transform: 'translateY(-50%)',
-        backgroundColor: '#f0f7fc', // Background color
-        color: 'black', // Text color
-        padding: '1px 1px', // Padding for better visibility
-        borderRadius: '4px', // Rounded corners
-        fontSize: '12px',
-        textAlign: 'center',
-        minWidth: '10px', // Ensures small but readable size
-      }}
-    >
-      {data.depth}
-    </div>
+    {typeof data.depth === 'number' && (
+      <div
+        style={{
+          position: 'absolute',
+          left: '-1.5rem',
+          top: '20%',
+          transform: 'translateY(-50%)',
+          backgroundColor: '#f0f7fc',
+          color: 'black',
+          padding: '1px 1px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          textAlign: 'center',
+          minWidth: '10px',
+        }}
+      >
+        {data.depth}
+      </div>
+    )}
 
      
 
@@ -319,7 +322,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
   const visibleNodes = nodes.filter((node) => node.data.isVisible);
 
   const modifiedNodes = visibleNodes.map((node) => {
-    let isActive =  node.data.isActiveSearchResult;
+    let isActive = node.data?.isActiveSearchResult;
   
     // Maintain sequence-based highlighting
     if (activeSequence) {
@@ -332,14 +335,28 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
       );
     }
   
-    // If the node is searched, apply `highlighted-node`
-    const highlightClass = node.data.isHighlighted ? 'highlighted-node' : '';
+    const highlightClass = node.data?.isHighlighted ? 'highlighted-node' : '';
     const sequenceClass = isActive ? 'sequence-highlighted' : '';
-    const activeClass = node.data.isActiveSearchResult ? 'active-search-result' : '';
-
+    const activeClass = isActive ? 'active-search-result' : '';
+  
+    // ✅ NEW: Determine if it’s a visible leaf node
+    const visibleChildren = (adjacencyList[node.id] || []).filter(childId => {
+      const child = nodes.find(n => n.id === childId);
+      return child?.data?.isVisible;
+    });
+  
+    const isLeaf = visibleChildren.length === 0;
+    const hiddenDescendants = isLeaf
+      ? countHiddenDescendants(node.id, nodes, adjacencyList)
+      : 0;
+  
     return {
       ...node,
-      className: `${highlightClass} ${sequenceClass} ${activeClass}`.trim(), // Ensure both classes apply properly
+      data: {
+        ...node.data,
+        depth: isLeaf && hiddenDescendants > 0 ? hiddenDescendants : null,
+      },
+      className: `${highlightClass} ${sequenceClass} ${activeClass}`.trim(),
     };
   });
   

@@ -9,7 +9,7 @@ export function extractRepoName(url) {
 }
 
 
-function calculateNodeDepth(adjacencyList) {
+export function calculateNodeDepth(adjacencyList) {
     const depthMap = {};
     const queue = [];
   
@@ -37,4 +37,33 @@ function calculateNodeDepth(adjacencyList) {
     return depthMap;
   }
   
-  export default calculateNodeDepth;
+export function countHiddenDescendants(nodeId, allNodes, adjacencyList) {
+    const visited = new Set();
+    const stack = [...(adjacencyList[nodeId] || [])];
+    let count = 0;
+  
+    while (stack.length > 0) {
+      const currentId = stack.pop();
+      if (visited.has(currentId)) continue;
+      visited.add(currentId);
+  
+      const currentNode = allNodes.find(n => n.id === currentId);
+      if (!currentNode) continue; // Defensive check
+  
+      if (!currentNode.data?.isVisible) {
+        count += 1;
+      }
+  
+      const children = adjacencyList[currentId];
+      if (children && Array.isArray(children)) {
+        for (let child of children) {
+          if (!visited.has(child)) {
+            stack.push(child);
+          }
+        }
+      }
+    }
+  
+    return count;
+  }
+  

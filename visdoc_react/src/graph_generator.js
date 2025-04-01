@@ -1,6 +1,6 @@
 import { MarkerType } from '@xyflow/react';
 import dagre from 'dagre';
-import calculateNodeDepth from './utils'
+import {calculateNodeDepth} from './utils'
 
 
 /** Use these constants as you wish */
