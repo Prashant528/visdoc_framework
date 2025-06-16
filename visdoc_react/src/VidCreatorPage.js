@@ -10,7 +10,7 @@ const VidCreatorPage = () => {
   
   return (
     <div>
-      <h3>Video Creator Page</h3>
+      <h3> Edit the contents:</h3>
       <AddImages flow ={flow} summaries={summaries}/>
       </div>
   );

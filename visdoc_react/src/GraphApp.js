@@ -609,7 +609,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           expandNodeAndRevealPath={expandNodeAndRevealPath}
           clearSearch={handleClearGraph}/>
 
-          
+        <div style={{ display: 'flex', gap: '25px', alignItems: 'center' }}>
         <button 
             onClick={handleClearGraph}
             style={{
@@ -625,20 +625,21 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
             Clear
           </button>
         {/* Create Videos Button */}
-        {/* <button 
+        <button 
           onClick={handleCreateVideosButtonClick} 
           style={{ 
-            backgroundColor: '#007bff', 
-            color: '#fff', 
-            padding: '8px 16px', 
-            border: 'none', 
-            marginLeft: '8px',
-            borderRadius: '4px', 
-            cursor: 'pointer' 
+            padding: '8px 12px',
+              border: '1px solid #ccc',
+              backgroundColor: '#007bff', /* Red color for emphasis */
+              color: 'white',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '16px'
+
           }}
         >
-          Create Videos
-        </button> */}
+          Edit Tree
+        </button>
         {/* <button 
           onClick={handleCreateVideosButtonClick} 
           style={{ 
@@ -654,6 +655,7 @@ const GraphApp = ({ graph_sequences, summaries , repo}) => {
           Edit Texts
         </button>*/}
       </div> 
+      </div>
 
       {/* The React Flow Graph */}
       <div className="graph-container">
